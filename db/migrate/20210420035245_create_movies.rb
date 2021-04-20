@@ -18,6 +18,7 @@ class CreateMovies < ActiveRecord::Migration[6.1]
       t.string :BoxOffice
       t.string :Production
       t.boolean :Response
+      
       t.timestamps
     end
   end
