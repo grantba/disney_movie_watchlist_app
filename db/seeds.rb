@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create([{first_name: "Winston", last_name: "BostonTerrier", username: "winny", password: "winston"}, {first_name: "Bingo", last_name: "Pug", username: "BingBing", password: "bingo"}])
+User.create([{first_name: "Winston", last_name: "BostonTerrier", username: "winny", email: "winston@dog.com", password: "winston"}, {first_name: "Bingo", last_name: "Pug", username: "BingBing", email: "bingo@dog.com", password: "bingo"}])
 
 Watchlist.create([{category_type: "Favorites", user_id: 1}, {category_type: "Need to Watch", user_id: 2}])
 
