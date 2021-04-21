@@ -18,4 +18,30 @@ class Movie < ApplicationRecord
         end
     end
 
+    def self.search(movie)
+        if movie["Response"] == "False"
+            #update later in controller
+            flash[:alert] = "That movie could not be found. Please try again."
+        else
+            new_movie = Movie.new(Title: movie["Title"], Year: movie["Year"], Rated: movie["Rated"], Released: movie["Released"], Runtime: movie["Runtime"], Genre: movie["Genre"], Director: movie["Director"], Writer: movie["Writer"], Actors: movie["Actors"], Plot: movie["Plot"], Awards: movie["Awards"], Poster: movie["Poster"], Ratings: movie["Ratings"], imdbID: movie["imdbID"], BoxOffice: movie["BoxOffice"], Production: movie["Production"], Response: movie["Response"])
+            if m = Movie.find_by(Title: new_movie.Title, imdbID: new_movie.imdbID)
+                if m.update(Rated: movie["Rated"], Released: movie["Released"], Runtime: movie["Runtime"], Genre: movie["Genre"], Director: movie["Director"], Writer: movie["Writer"], Actors: movie["Actors"], Plot: movie["Plot"], Awards: movie["Awards"], Poster: movie["Poster"], Ratings: movie["Ratings"], BoxOffice: movie["BoxOffice"], Production: movie["Production"], Response: movie["Response"])
+                    m
+                else
+                    #update later in controller
+                    flash[:alert] = "There was an issue adding your movie. Please try again."
+                end
+            else
+                if new_movie.save
+                    m = "(" + new_movie.Year + ")"
+                    new_movie.update(Year: m)
+                    new_movie
+                else
+                    #update later in controller
+                    flash[:alert] = "There was an issue adding your movie. Please try again."
+                end
+            end
+        end
+    end 
+
 end
