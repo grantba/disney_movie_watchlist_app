@@ -1,0 +1,8 @@
+<h2><%= @watchlist.category_type %></h2>
+    <% @watchlist.movies.each do |movie| %>
+        <h3><%= link_to movie.Title, movie_path(movie) %></h3>
+<% end %>
+
+<% if @watchlist.movies.none? %>
+        <h3>You have no movies in this category yet.</h3>
+<% end %>
