@@ -1,0 +1,31 @@
+# Need to refactor logic to movies_helper later
+<h1><%= @movie.Title %></h1>
+<%= image_tag(@movie.Poster.gsub('m.media-', ""), width: 200) %>
+<p>Rated: <%= @movie.Rated %></p>
+<p>Released: <%= Time.strptime("#{@movie.Released}", "%d %b %Y").strftime("%B %d, %Y") %></p>
+<p>Runtime: <%= @movie.Runtime.gsub("min", "minutes") %></p>
+<p>Genre: <%= @movie.Genre %></p>
+<p>Director: <%= @movie.Director %></p>
+<p>Writer: <%= @movie.Writer %></p>
+<p>Actors/Actresses: <%= @movie.Actors %></p>
+<p>Plot: <%= @movie.Plot %></p>
+<p>Awards: <%= @movie.Awards %></p>
+<p>Ratings: <%= @movie.Ratings.gsub("}", "").gsub("[", "").gsub("]", "").gsub("\{\"Source\"=>\"", "").gsub("\"\, \"Value\"=>\"", " - ").gsub("\"", "") %>
+<p>Box Office: <%= @movie.BoxOffice %></p>
+<p>Production: <%= @movie.Production %></p>
+<p>Imdb Movie Link: <a href="<%=@movie.imdbID.gsub("tt", "https://www.imdb.com/title/tt")%>" target="_blank"> Click here to see more information about this movie</a></p>
+<br>
+
+<% if @movie.reviews.any? %>
+<h3>Disney Watchlist App Movie Reviews</h3>
+<% @movie.reviews.each do |movie| %>
+    <h4><%= movie.rating %> stars</h4>
+    <p><%= movie.description %></p>
+<% end %>
+<%= link_to "Add Review", new_review_path %>
+<% end %>
+<br><br>
+
+# Add to navbar later
+<h4><%= link_to "Movie Search Page", movies_path %></h4>
+<h4><%= link_to "Add Movie to a Watchlist", watchlists_path %></h4>
