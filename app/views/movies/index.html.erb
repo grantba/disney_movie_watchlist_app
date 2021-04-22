@@ -1,0 +1,13 @@
+<h1>Search Movies</h1>
+
+<%= form_with url: search_by_name_path do |f| %>
+    <h2><%= f.label "Enter the name of the movie you'd like to search for:" %></h2>
+    <%= f.text_field "search" %>
+    <%= f.submit "Submit" %>
+    <% end %><br>
+
+<%= form_with url: search_by_id_path do |f| %>
+    <h2><%= f.label "Or pick a movie from the list:" %></h2>
+    <%= f.select "imdbID", options_for_select(@movies.map { |obj| [obj[:Title], obj[:imdbID]] }), prompt: "Select a Movie" %>
+    <%= f.submit "Submit" %>
+    <% end %><br>
