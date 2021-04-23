@@ -5,5 +5,5 @@ class User < ApplicationRecord
     has_many :movies, through: :watchlists
     
     validates :username, presence: true, uniqueness: true
-    validates :password, presence: true
+    # validate that an email is in fact an email
 end
