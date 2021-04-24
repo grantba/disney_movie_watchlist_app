@@ -12,6 +12,14 @@
 
   <body>
 
+  <% if flash.notice %>
+    <% flash.each do |type, msg| %>
+      <div class="flash">
+        <%= msg %>
+      </div>
+    <% end %>
+  <% end %>
+
     <%= yield %>
   </body>
 </html>
