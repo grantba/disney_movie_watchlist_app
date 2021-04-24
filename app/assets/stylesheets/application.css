@@ -13,18 +13,112 @@
  *= require_tree .
  *= require_self
  */
+ img {
+    height: 100%;
+    width: 100px;
+ }
+
+ .header {
+    background-color: white;
+    text-align: center;
+    padding: 5px;
+    border-bottom: 5px solid black
+  }
+
+  /* The navbar container */
+ .topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  /* Navbar links */
+  .topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Links - change color on hover */
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  body {
+    background-color: white;
+    width: auto;
+    height: auto;
+    border: 10px solid black;
+    padding: 25px;
+    margin: 20px;
+  }
+
+  .footer {
+    background-color: white;
+    text-align: center;
+    padding: 10px;
+  }
 
  .flash {
     border-radius: 22px;
-    background-color:Tomato;
-    padding: 12px;
+    background-color:#e03620;
+    padding: 20px;
     display: table;
     font-size: 150%;
     font-weight: 900;
   }
 
- .field_with_errors {
-    padding: 2px;
-    background-color: Tomato;
-    display: table;
+  div#error_explanation {
+    padding: 20px;
+    color: #e03620;
   }
+
+ /* div.field_with_errors {
+    padding: 20px;
+    background-color: #e03620;
+    display: table;
+  } */
+
+  input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=number], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  input[type=submit] {
+    width: 100%;
+    background-color: #e03620;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  input[type=submit]:hover {
+    background-color: #e03620;
+  }
+  
+  /* div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+  } */

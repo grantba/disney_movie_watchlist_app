@@ -12,14 +12,42 @@
 
   <body>
 
+  <h1 class="header"><a href="http://cliparts.co/clipart/2362985" title="Image from cliparts.co"><img src="http://cliparts.co/cliparts/6Ty/Xxr/6TyXxrb8c.jpg" width="350" alt="Mickey mouse clip art 2014 | Clipart Panda - Free Clipart Images" /></a>
+  <br>Disney Movie Watchlist</h1>
+  <br>
+
+  <div class="topnav">
+  <% if !logged_in? %>
+  <%= link_to "Home", root_path %>
+  <%= link_to "Sign Up", signup_path %>
+  <%= link_to "Login", login_path %>
+  <% else %>
+  <%= link_to "Home", root_path %>
+  <%= link_to "Search Movies", movies_path %>
+  <%= link_to "Watchlists", watchlists_path %>
+  <%= link_to "Reviews", reviews_path %>
+  <%= link_to "My Info Page", '/users/:id/' %>
+  <%= link_to "Logout", logout_path %>
+  <% end %>
+  </div>
+
   <% if flash.notice %>
     <% flash.each do |type, msg| %>
       <div class="flash">
         <%= msg %>
       </div>
     <% end %>
+    <br><br>
   <% end %>
 
+  <span class="content">
     <%= yield %>
+  </span>
+
+  <br><br>
+  <footer class="footer">
+    <small>&copy; 2021 <strong>DisneyMovieWatchlist made with &#9829 by Blaire Grant</strong></small>
+  </footer>
+
   </body>
 </html>
