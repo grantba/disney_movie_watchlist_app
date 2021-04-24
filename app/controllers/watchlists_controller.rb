@@ -21,6 +21,19 @@ class WatchlistsController < ApplicationController
         end
     end
 
+    def edit
+        @watchlist = Watchlist.find_by(id: params[:id])
+    end
+
+    def update
+        @watchlist = Watchlist.find_by(id: params[:id])
+        if @watchlist.update(watchlist_params)
+            redirect_to watchlist_path(@watchlist)
+        else
+            render :edit
+        end
+    end
+
     private
 
     def watchlist_params
