@@ -19,5 +19,9 @@ class UsersController < ApplicationController
     def destroy
 
     end
+
+    def home
+
+    end
     
 end

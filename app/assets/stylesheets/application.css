@@ -21,6 +21,7 @@
  .header {
     background-color: white;
     text-align: center;
+    font-size: 35px;
     padding: 5px;
     border-bottom: 5px solid black
   }
@@ -37,6 +38,7 @@
     display: block;
     color: #f2f2f2;
     text-align: center;
+    font-size: 25px;
     padding: 14px 16px;
     text-decoration: none;
   }
@@ -52,12 +54,19 @@
     width: auto;
     height: auto;
     border: 10px solid black;
-    padding: 25px;
+    padding: 35px;
     margin: 20px;
   }
 
+  .content {
+    padding-left: 25%;
+    padding-right: 25%;
+    width: 200px;
+  }
+  
   .footer {
     background-color: white;
+    font-size: 20px;
     text-align: center;
     padding: 10px;
   }
