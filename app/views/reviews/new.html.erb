@@ -1,0 +1,23 @@
+<% if @review.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
+
+    <ul>
+      <% @review.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for(@review) do |f| %>
+    <%= f.label :rating, "Rating:" %> 
+    <%= f.number_field :rating, placeholder: "Give this movie 1-5 stars!" %><br>
+    <%= f.label :description, "Description:" %> 
+    <%= f.text_field :description, placeholder: "Give this movie a review" %><br>
+    <%= f.label :movie_id, "Movie:" %> 
+    <%= f.number_field :movie_id, placeholder: "Enter movie's id" %><br>
+    <%= f.label :user_id, "User:" %> 
+    <%= f.number_field :user_id, placeholder: "Enter user's id" %><br>
+    <%= f.submit "Submit Review" %>
+<% end %>
