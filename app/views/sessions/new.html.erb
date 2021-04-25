@@ -1,4 +1,4 @@
-<%= form_for users_path do |f| %>
+<%= form_for(:user, url: login_path) do |f| %>
 
     <%= f.label "Username:" %><br>
     <%= f.text_field :username %><br><br>

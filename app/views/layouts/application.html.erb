@@ -26,10 +26,11 @@
   <%= link_to "Search Movies", movies_path %>
   <%= link_to "Watchlists", watchlists_path %>
   <%= link_to "Reviews", reviews_path %>
-  <%= link_to "My Info Page", '/users/:id/' %>
-  <%= link_to "Logout", logout_path %>
+  <%= link_to "Logout", logout_path, method: 'delete', style: 'float: right' %>
+  <%= link_to "Edit My Info", edit_user_path(current_user.id), style: 'float: right' %>
   <% end %>
   </div>
+  <br><br>
 
   <% if flash.notice %>
     <% flash.each do |type, msg| %>
@@ -37,7 +38,7 @@
         <%= msg %>
       </div>
     <% end %>
-    <br><br>
+    <br>
   <% end %>
 
   <span class="content">
