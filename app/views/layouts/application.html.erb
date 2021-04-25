@@ -24,8 +24,8 @@
   <% else %>
   <%= link_to "Home", root_path %>
   <%= link_to "Search Movies", movies_path %>
-  <%= link_to "Watchlists", watchlists_path %>
-  <%= link_to "Reviews", reviews_path %>
+  <%= link_to "Watchlists", user_watchlists_path(current_user.id) %>
+  <%= link_to "Reviews", user_reviews_path(current_user.id) %>
   <%= link_to "Logout", logout_path, method: 'delete', style: 'float: right' %>
   <%= link_to "Edit My Info", edit_user_path(current_user.id), style: 'float: right' %>
   <% end %>

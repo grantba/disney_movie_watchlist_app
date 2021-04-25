@@ -3,6 +3,7 @@
 <h2><%= @watchlist.category_type %></h2>
     <% @watchlist.movies.each do |movie| %>
         <h3><%= link_to movie.Title, movie_path(movie) %></h3>
+        <p><%= button_to "Delete from Watchlist", movie_path(movie), method: 'delete', params: { watchlist_id: @watchlist.id } %></p>
 <% end %>
 
 <% if @watchlist.movies.none? %>

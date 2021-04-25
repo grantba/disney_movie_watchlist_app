@@ -10,10 +10,13 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   delete '/logout' => 'sessions#destroy'
  
-  resources :movies 
-  resources :reviews
+  resources :movies, only: [:index, :show, :destroy]
+
+  resources :users, only: [:show] do
+    resources :reviews, :watchlists, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  end
+
   resources :users, only: [:new, :create, :edit, :update, :destroy]
-  resources :watchlists
 
   root 'users#home'
 

@@ -1,7 +1,7 @@
 class WatchlistsController < ApplicationController
 
     def index
-        @watchlists = Watchlist.all
+        @watchlists = Watchlist.all.where(user_id: current_user.id)
     end
 
     def show

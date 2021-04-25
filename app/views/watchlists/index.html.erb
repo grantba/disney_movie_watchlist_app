@@ -1,4 +1,4 @@
 <h1>Watchlist Categories</h1>
 <% @watchlists.each do |wl| %>
-    <h3><%= link_to wl.category_type, watchlist_path(wl.id) %></h3>
+    <h3><%= link_to wl.category_type, user_watchlist_path(current_user.id, wl.id) %></h3>
 <% end %>
