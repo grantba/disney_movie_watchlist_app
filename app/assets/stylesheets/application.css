@@ -72,16 +72,16 @@
   }
 
  .flash {
-    border-radius: 22px;
+    border-radius: 4px;
     background-color:#e03620;
-    padding: 20px;
+    padding: 14px 20px;
     display: table;
-    font-size: 150%;
+    font-size: 125%;
     font-weight: 900;
   }
 
   div#error_explanation {
-    padding: 20px;
+    padding: 5px;
     color: #e03620;
   }
 
@@ -147,9 +147,24 @@
   }
   
   input[type=submit]:hover {
-    background-color: #e03620;
+    background-color: #ddd;
   }
   
+  #delete_button {
+    width: 20%;
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    margin: auto;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #delete_button:hover {
+    background-color: #e03620;
+  }
+
   /* div {
     border-radius: 5px;
     background-color: #f2f2f2;

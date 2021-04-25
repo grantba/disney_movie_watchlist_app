@@ -10,6 +10,8 @@
   </div>
 <% end %>
 
+<h2>Only update the information you wish you change.</h2>
+
 <%= form_for(@user) do |f| %>
 
     <%= f.label :first_name, "First Name:" %><br>
@@ -25,8 +27,10 @@
     <%= f.email_field :email %><br><br>
 
     <%= f.label :password, "Password:" %><br>
-    <%= f.password_field :password, placeholder: "Leave blank if you don't want to change your password." %><br><br>
+    <%= f.password_field :password %><br><br>
 
     <%= f.submit "Edit Information" %>
 
-<% end %>
+<% end %><br>
+
+<div id="delete_button"><%= button_to "Delete Account", user_path, method: 'delete' %></div>

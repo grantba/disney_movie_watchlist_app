@@ -12,7 +12,7 @@ Rails.application.routes.draw do
  
   resources :movies 
   resources :reviews
-  resources :users
+  resources :users, only: [:new, :create, :edit, :update, :destroy]
   resources :watchlists
 
   root 'users#home'
