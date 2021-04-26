@@ -17,6 +17,7 @@ class ReviewsController < ApplicationController
         if @review.save
             redirect_to review_path(@review)
         else
+            flash.now[:notice] = "There was an issue creating your new review. Please try again."
             render :new
         end
     end
@@ -30,7 +31,23 @@ class ReviewsController < ApplicationController
         if @review.update(review_params)
             redirect_to review_path(@review)
         else
+            flash.now[:notice] = "There was an issue editing your review. Please try again."
             render :edit
+        end
+    end
+
+    def destroy
+        @review = Review.find_by(id: params[:id])
+        movie_by_name = @review.movie.Title
+        session[delete_review_count: @review.id] = 1 unless session[delete_review_count: @review.id] == 2
+        if session[delete_review_count: @review.id] == 1
+            session[delete_review_count: @review.id] = 2
+            flash.now[:notice] = "Are you sure you want to delete this review for #{movie_by_name}?"
+            render :edit
+        elsif session[delete_review_count: @review.id] == 2
+            @review.destroy    
+            flash[:notice] = "Your review for #{movie_by_name} has been deleted."
+            redirect_to user_reviews_path
         end
     end
     

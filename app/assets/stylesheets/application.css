@@ -13,7 +13,7 @@
  *= require_tree .
  *= require_self
  */
- img {
+ .header img {
     height: 100%;
     width: 100px;
  }
@@ -95,6 +95,7 @@
     text-decoration: none!important;
   }
 
+
   input[type=text], select {
     width: 100%;
     padding: 12px 20px;
@@ -170,3 +171,36 @@
     background-color: #f2f2f2;
     padding: 20px;
   } */
+
+  h1.movie_show_page {
+      text-align: center;
+  }
+
+  span#movie_poster {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150;
+  }
+
+  div.watchlist_show_page {
+      text-align: center;
+  }
+
+  div.watchlist_show_page a {
+    width: 25%;
+    color: black;
+  }
+
+  div.watchlist_index_page {
+      text-align: center
+  }
+
+  div.watchlist_index_page a {
+    width: 25%;
+    color: black;
+  }
+
+  div#watchlists_index_links a {
+    color: black;
+  }

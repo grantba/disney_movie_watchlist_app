@@ -1,6 +1,6 @@
 # Need to refactor logic to movies_helper later
-<h1><%= @movie.Title %></h1>
-<%= image_tag(@movie.Poster.gsub('m.media-', ""), width: 200) %>
+<h1 class='movie_show_page'><%= @movie.Title %></h1>
+<span id='movie_poster'><%= image_tag(@movie.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image') %></span>
 <p>Rated: <%= @movie.Rated %></p>
 <p>Released: <%= Time.strptime("#{@movie.Released}", "%d %b %Y").strftime("%B %d, %Y") %></p>
 <p>Runtime: <%= @movie.Runtime.gsub("min", "minutes") %></p>
@@ -28,4 +28,4 @@
 
 # Add to navbar later
 <h4><%= link_to "Movie Search Page", movies_path %></h4>
-<h4><%= link_to "Add Movie to a Watchlist", watchlists_path %></h4>
+<h4><%= link_to "Add Movie to a Watchlist", user_watchlists_path(current_user.id) %></h4>

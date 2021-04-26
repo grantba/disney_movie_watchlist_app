@@ -1,11 +1,21 @@
 <br><br><br>
 
-<h2><%= @watchlist.category_type %></h2>
-    <% @watchlist.movies.each do |movie| %>
-        <h3><%= link_to movie.Title, movie_path(movie) %></h3>
-        <p><%= button_to "Delete from Watchlist", movie_path(movie), method: 'delete', params: { watchlist_id: @watchlist.id } %></p>
-<% end %>
+<div class="watchlist_show_page">
+<h1><%= @watchlist.category_type %></h1>
+<%= link_to "Edit Name of Watchlist", edit_user_watchlist_path(current_user.id, @watchlist) %>
+</div>
 
+<br>
 <% if @watchlist.movies.none? %>
         <h3>You have no movies in this category yet.</h3>
+<% else %>
+<h2>Movies in this Watchlist:</h2>
+<% @watchlist.movies.each do |movie| %>
+        <h3><%= link_to movie.Title, movie_path(movie) %></h3>
+
+        <p><%= button_to "Delete this Movie from Watchlist", movie_path(movie), method: 'delete', params: { watchlist_id: @watchlist.id } %></p>
+        
 <% end %>
+<% end %>
+
+<br><br><div id="delete_button"><%= button_to "Delete Watchlist", user_watchlist_path(current_user.id, @watchlist), method: 'delete' %></div>
