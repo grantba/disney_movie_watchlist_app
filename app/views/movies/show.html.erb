@@ -1,19 +1,49 @@
 # Need to refactor logic to movies_helper later
+<% if !@movie.Title.blank? && @movie.Title != "N/A" %>
 <h1 class='movie_show_page'><%= @movie.Title %></h1>
+<% end %>
+<% if !@movie.Poster.blank? && @movie.Poster != "N/A" %>
 <span id='movie_poster'><%= image_tag(@movie.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image') %></span>
+<% end %>
+<% if !@movie.Rated.blank? && @movie.Rated != "N/A" %>
 <p>Rated: <%= @movie.Rated %></p>
+<% end %>
+<% if !@movie.Released.blank? && @movie.Released != "N/A" %>
 <p>Released: <%= Time.strptime("#{@movie.Released}", "%d %b %Y").strftime("%B %d, %Y") %></p>
+<% end %>
+<% if !@movie.Runtime.blank? && @movie.Runtime != "N/A" %>
 <p>Runtime: <%= @movie.Runtime.gsub("min", "minutes") %></p>
+<% end %>
+<% if !@movie.Genre.blank? && @movie.Genre != "N/A" %>
 <p>Genre: <%= @movie.Genre %></p>
+<% end %>
+<% if !@movie.Director.blank? && @movie.Director != "N/A" %>
 <p>Director: <%= @movie.Director %></p>
+<% end %>
+<% if !@movie.Writer.blank? && @movie.Writer != "N/A" %>
 <p>Writer: <%= @movie.Writer %></p>
+<% end %>
+<% if !@movie.Actors.blank? && @movie.Actors != "N/A" %>
 <p>Actors/Actresses: <%= @movie.Actors %></p>
+<% end %>
+<% if !@movie.Plot.blank? && @movie.Plot != "N/A" %>
 <p>Plot: <%= @movie.Plot %></p>
+<% end %>
+<% if !@movie.Awards.blank? && @movie.Awards != "N/A" %>
 <p>Awards: <%= @movie.Awards %></p>
+<% end %>
+<% if !@movie.Ratings.blank? && @movie.Ratings != "N/A" %>
 <p>Ratings: <%= @movie.Ratings.gsub("}", "").gsub("[", "").gsub("]", "").gsub("\{\"Source\"=>\"", "").gsub("\"\, \"Value\"=>\"", " - ").gsub("\"", "") %>
+<% end %>
+<% if !@movie.BoxOffice.blank? && @movie.BoxOffice != "N/A" %>
 <p>Box Office: <%= @movie.BoxOffice %></p>
+<% end %>
+<% if !@movie.Production.blank? && @movie.Production != "N/A" %>
 <p>Production: <%= @movie.Production %></p>
+<% end %>
+<% if !@movie.imdbID.blank? && @movie.imdbID != "N/A" %>
 <p>Imdb Movie Link: <a href="<%=@movie.imdbID.gsub("tt", "https://www.imdb.com/title/tt")%>" target="_blank"> Click here to see more information about this movie</a></p>
+<% end %>
 <br>
 
 <% if @movie.reviews.any? %>
@@ -22,10 +52,34 @@
     <h4><%= movie.rating %> stars</h4>
     <p><%= movie.description %></p>
 <% end %>
-<%= link_to "Add Review", new_review_path %>
+<% else %>
+<h3>There are no reviews for this movie yet.</h3>
 <% end %>
+# Need to make this a form to add a review
+# <%= link_to "Add Review", new_user_review_path(current_user.id, @movie) %>
 <br><br>
 
-# Add to navbar later
-<h4><%= link_to "Movie Search Page", movies_path %></h4>
-<h4><%= link_to "Add Movie to a Watchlist", user_watchlists_path(current_user.id) %></h4>
+# Add to a side navbar later
+<h3><%= link_to "Search for Another Movie", movies_path %></h3><br>
+# <h3><%#= link_to "Add Movie to a Watchlist", user_watchlists_path(current_user.id) %></h3>
+
+<% if current_user.movies.include?(@movie) %>
+<h3>Change this Movie's Watchlist</h3>
+<%= form_for :watchlist, url: user_watchlist_path(current_user.id), method: 'patch', params: { movie_id: @movie.id} do |form| %>
+    <%= form.collection_select :watchlist_id, watchlist_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist"  %>
+    <%= form.submit "Add to Watchlist" %>
+<% end %><br>
+<% else %>
+<h3>Add this Movie to a Watchlist</h3>
+<%= form_for :watchlist, url: user_watchlist_path(current_user.id), method: 'patch', params: { movie_id: @movie.id} do |form| %>
+    <%= form.collection_select :watchlist_id, watchlist_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist"  %>
+    <%= form.submit "Add to Watchlist" %>
+<% end %><br>
+<% end %>
+<h3>Or Create a New Watchlist for this Movie</h3>
+<%= form_for :watchlist, url: user_watchlists_path(current_user.id) do |form| %>
+    <%= form.text_field :category_type, placeholder: "Name your watchlist" %><br>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+    <%= form.hidden_field :movie_id, value: @movie.id %>
+    <%= form.submit "Add to Watchlist" %>
+<% end %>

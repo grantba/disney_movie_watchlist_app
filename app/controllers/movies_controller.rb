@@ -26,8 +26,8 @@ class MoviesController < ApplicationController
         @movie_watchlist = MovieWatchlist.where({movie_id: @movie.id, watchlist_id: @watchlist.id})
         if @user.movies.include?(@movie) && @user.watchlists.include?(@watchlist)
             if @watchlist.movies.delete(@movie)
-                flash[:notice] = "This movie has been removed from your watchlist."
-                redirect_to user_watchlists_path(@user)
+                flash[:notice] = "#{@movie.Title} has been removed from your #{@watchlist.category_type} watchlist."
+                redirect_to user_watchlist_path(@user.id, @watchlist.id)
             else
                 flash[:notice] = "You can only delete movies that belong to your own account."
                 redirect_to user_watchlist_path(@user.id, @watchlist.id)

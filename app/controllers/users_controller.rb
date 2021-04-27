@@ -33,17 +33,10 @@ class UsersController < ApplicationController
 
     def destroy
         @user = User.find_by(id: params[:id])
-        session[delete_account_count: @user.id] = 1 unless session[delete_account_count: @user.id] == 2
-        if session[delete_account_count: @user.id] == 1
-            session[delete_account_count: @user.id] = 2
-            flash.now[:notice] = "Are you sure you want to delete your account?"
-            render :edit
-        elsif session[delete_account_count: @user.id] == 2
-            user_by_name = @user.first_name
-            @user.destroy    
-            flash[:notice] = "We're sad to see you go, #{user_by_name}, but thanks for visiting!"
-            redirect_to root_path
-        end
+        user_by_name = @user.first_name
+        @user.destroy    
+        flash[:notice] = "We're sad to see you go, #{user_by_name}, but thanks for visiting!"
+        redirect_to root_path
     end
 
     def home

@@ -17,7 +17,6 @@ class ReviewsController < ApplicationController
         if @review.save
             redirect_to review_path(@review)
         else
-            flash.now[:notice] = "There was an issue creating your new review. Please try again."
             render :new
         end
     end
@@ -31,7 +30,6 @@ class ReviewsController < ApplicationController
         if @review.update(review_params)
             redirect_to review_path(@review)
         else
-            flash.now[:notice] = "There was an issue editing your review. Please try again."
             render :edit
         end
     end

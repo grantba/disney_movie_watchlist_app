@@ -27,10 +27,10 @@
     <%= f.email_field :email %><br><br>
 
     <%= f.label :password, "Password:" %><br>
-    <%= f.password_field :password %><br><br>
+    <%= f.password_field :password, placeholder: "Type in a new password or your current password if you do not wish to change it at this time." %><br><br>
 
     <%= f.submit "Edit Information" %>
 
 <% end %>
 
-<br><br><div id="delete_button"><%= button_to "Delete Account", user_path, method: 'delete' %></div>
+<br><br><div id="delete_button"><%= button_to "Delete Account", user_path(current_user), method: 'delete', data: {confirm: "Are you sure you want to delete your account #{@user.first_name}?"} %></div>
