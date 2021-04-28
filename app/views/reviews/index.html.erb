@@ -1,8 +1,19 @@
-<h1>Reviews</h1>
-<% @reviews.each do |r| %>
-    <h3><%= r.movie.Title %></h3>
+<div class="review_index_page">
+<h1>Your Movie Reviews</h1>
+</div>
+
+<br>
+<div id="reviews_index_links">
+<% if @reviews.present? %>
+<% @reviews.each do |review| %>
+    <h2><%= link_to review.movie.Title, movie_path(review.movie.id) %></h2>
     <ul>
-    <li><%= r.rating %> stars </li>
-    <li><%= r.description %></li>
+    <li><%= review.rating %> stars </li>
+    <li><%= review.description %></li>
     </ul>
+    <br>
 <% end %>
+<% else %>
+    <h3>You have not created any reviews yet.</h3>.
+<% end %>
+</div>

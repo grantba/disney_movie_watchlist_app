@@ -176,6 +176,20 @@
       text-align: center;
   }
 
+  h2#search_movie_link a {
+    text-decoration: none;
+    color: black;
+  }
+
+  h2#search_movie_link {
+    text-align: center;
+  }
+
+  .alter_reviews_links {
+    text-decoration: none!important;
+    color: black!important;
+  }
+
   span#movie_poster {
     display: table;
     margin-left: auto;
@@ -204,3 +218,28 @@
   div#watchlists_index_links a {
     color: black;
   }
+
+  div.review_index_page {
+    text-align: center
+ }
+
+ div.review_index_page a {
+  width: 25%;
+  color: black;
+ }
+
+ div#reviews_index_links a {
+  color: black;
+ }
+
+ /* Star ratings */
+ /* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ .checked {
+    color: gold;
+  }
+  <h2>Star Rating</h2>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star"></span>
+<span class="fa fa-star"></span> */

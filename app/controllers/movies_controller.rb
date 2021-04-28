@@ -6,16 +6,27 @@ class MoviesController < ApplicationController
 
     def show
         @movie = Movie.find_by(id: params[:id])
+        @reviews = Review.all.where(movie_id: @movie.id)
     end
 
     def search_by_name
         @movie = Api.get_movie_by_name(params[:search])
-        redirect_to movie_path(@movie)
+        if @movie == "That movie could not be found. Please try again." || @movie == "There was an issue loading this movie. Please try again."
+            flash[:notice] = @movie
+            redirect_to movies_path
+        else
+            redirect_to movie_path(@movie)
+        end
     end
 
     def search_by_id
         @movie = Api.get_movie_by_id(params[:imdbID])
-        redirect_to movie_path(@movie)
+        if @movie == "That movie could not be found. Please try again." || @movie == "There was an issue loading this movie. Please try again."
+            flash[:notice] = @movie
+            redirect_to movies_path
+        else
+            redirect_to movie_path(@movie)
+        end
     end
 
     #will have this option on the watchlist show page

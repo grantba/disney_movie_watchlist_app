@@ -3,7 +3,7 @@
 <h1 class='movie_show_page'><%= @movie.Title %></h1>
 <% end %>
 <% if !@movie.Poster.blank? && @movie.Poster != "N/A" %>
-<span id='movie_poster'><%= image_tag(@movie.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image') %></span>
+<span checked=false, id='movie_poster'><%= image_tag(@movie.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image') %></span>
 <% end %>
 <% if !@movie.Rated.blank? && @movie.Rated != "N/A" %>
 <p>Rated: <%= @movie.Rated %></p>
@@ -33,7 +33,7 @@
 <p>Awards: <%= @movie.Awards %></p>
 <% end %>
 <% if !@movie.Ratings.blank? && @movie.Ratings != "N/A" %>
-<p>Ratings: <%= @movie.Ratings.gsub("}", "").gsub("[", "").gsub("]", "").gsub("\{\"Source\"=>\"", "").gsub("\"\, \"Value\"=>\"", " - ").gsub("\"", "") %>
+<p>ratings: <%= @movie.Ratings.gsub("}", "").gsub("[", "").gsub("]", "").gsub("\{\"Source\"=>\"", "").gsub("\"\, \"Value\"=>\"", " - ").gsub("\"", "") %>
 <% end %>
 <% if !@movie.BoxOffice.blank? && @movie.BoxOffice != "N/A" %>
 <p>Box Office: <%= @movie.BoxOffice %></p>
@@ -44,24 +44,44 @@
 <% if !@movie.imdbID.blank? && @movie.imdbID != "N/A" %>
 <p>Imdb Movie Link: <a href="<%=@movie.imdbID.gsub("tt", "https://www.imdb.com/title/tt")%>" target="_blank"> Click here to see more information about this movie</a></p>
 <% end %>
-<br>
+<br><br>
 
-<% if @movie.reviews.any? %>
-<h3>Disney Watchlist App Movie Reviews</h3>
-<% @movie.reviews.each do |movie| %>
-    <h4><%= movie.rating %> stars</h4>
-    <p><%= movie.description %></p>
-<% end %>
+<% if @reviews.any? %>
+<h1>Disney Watchlist App Movie Reviews</h1>
+<ul>
+<% @reviews.each do |review| %>
+    <li><%= pluralize(review.rating, "Star") %> - <%= review.description %></li><br>
+    <% if review.user_id == current_user.id %>
+        <%= link_to "Edit this Review", edit_user_review_path(current_user.id, review.id) %>  |  <%= link_to "Delete this Review", user_review_path(current_user.id, review.id), method: 'delete', data: {confirm: "Are you sure you want to delete this review for #{@movie.Title}?" } %>
+    <% end %>
+<% end %><br><br>
+</ul>
 <% else %>
-<h3>There are no reviews for this movie yet.</h3>
+<h3>There are no reviews for this movie yet.</h3><br><br>
 <% end %>
-# Need to make this a form to add a review
-# <%= link_to "Add Review", new_user_review_path(current_user.id, @movie) %>
+<h2>Create a New Review for This Movie</h2><br>
+
+<%= form_for :review, url: movie_reviews_path(@movie) do |f| %>
+    <%= f.label :rating, "★ Star" %>
+    <%= f.radio_button :rating, 1 %>&emsp;
+    <%= f.label :rating, "★★ Stars" %>
+    <%= f.radio_button :rating, 2 %>&emsp;
+    <%= f.label :rating, "★★★ Stars" %>
+    <%= f.radio_button :rating, 3 %>&emsp;
+    <%= f.label :rating, "★★★★ Stars" %>
+    <%= f.radio_button :rating, 4 %>&emsp;
+    <%= f.label :rating, "★★★★★ Stars" %>
+    <%= f.radio_button :rating, 5 %><br><br>
+    <%= f.label :description, "Description:" %><br><br>
+    <%= f.text_field :description %><br><br>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field :movie_id, value: @movie.id %>
+    <%= f.submit "Submit Review" %>
+  <% end %>
 <br><br>
 
 # Add to a side navbar later
-<h3><%= link_to "Search for Another Movie", movies_path %></h3><br>
-# <h3><%#= link_to "Add Movie to a Watchlist", user_watchlists_path(current_user.id) %></h3>
+<h2 id="search_movie_link"><%= link_to "Search for Another Movie", movies_path %></h2><br>
 
 <% if current_user.movies.include?(@movie) %>
 <h3>Change this Movie's Watchlist</h3>

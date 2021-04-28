@@ -4,4 +4,5 @@ class Watchlist < ApplicationRecord
   belongs_to :user
 
   validates :category_type, presence: true, length: { maximum: 100, message: "- %{count} characters is the maximum allowed for a watchlist category." }
+
 end
