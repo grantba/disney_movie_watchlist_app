@@ -1,6 +1,6 @@
 <div class="watchlist_show_page">
 <h1><%= @watchlist.category_type %></h1>
-<%= link_to "Edit Name of Watchlist", edit_watchlist_path(@watchlist) %>
+<%= link_to "Edit Name of Watchlist", edit_user_watchlist_path(current_user.id, @watchlist) %>
 </div>
 
 <br>
@@ -18,4 +18,4 @@
 <br><h3 class="search_movie_link"><%= link_to "Search for Another Movie to Add to this Watchlist", movies_path %></h3><br>
 <% end %>
 
-<br><br><div id="delete_button"><%= button_to "Delete Watchlist", watchlist_path(@watchlist), method: 'delete', data: {confirm: "Are you sure you want to delete your watchlist, #{@watchlist.category_type}? If you have any movies in this watchlist and don't move them into another watchlist, you will lose them too!" } %></div>
+<br><div id="delete_button"><%= button_to "Delete Watchlist", watchlist_path(@watchlist), method: 'delete', data: {confirm: "Are you sure you want to delete your watchlist, #{@watchlist.category_type}? If you have any movies in this watchlist and don't move them into another watchlist, you will lose them too!" } %></div>

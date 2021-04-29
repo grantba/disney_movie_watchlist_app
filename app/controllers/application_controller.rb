@@ -9,13 +9,8 @@ class ApplicationController < ActionController::Base
         @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
     end
 
-    def correct_user
-        @user = User.find_by(id: params[:id]) || User.find_by(id: params[:user_id])
-        redirect_to '/', notice: "Access Denied." if !current_user?(@user)
-    end
-
-    def current_user?(user)
-        user == current_user
+    def correct_user?(user)
+        redirect_to '/', notice: "Access Denied. You may only access, add to, or update your own account information." if current_user != @user
     end
 
     def redirect_if_not_logged_in

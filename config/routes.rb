@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/signup' => 'users#new'
   post '/signup' => 'users#create'
 
+  get '/homepage' => 'users#show'
   get '/login' => 'sessions#new'
   post '/login' => 'sessions#create'
   delete '/logout' => 'sessions#destroy'
@@ -14,16 +15,16 @@ Rails.application.routes.draw do
     resources :reviews, only: [:create]
   end
  
-  resources :movies, only: [:index, :show, :destroy]
+  resources :movies, only: [:index, :show]
 
   resources :users, only: [:show] do
-    resources :reviews, :watchlists, only: [:index, :show]
+    resources :reviews, :watchlists, only: [:index, :show, :edit, :new]
   end
 
-  resources :reviews, only: [:new, :create, :edit, :update, :destroy]
-  resources :watchlists, only: [:new, :create, :edit, :update, :destroy]
+  resources :reviews, only: [:create, :update, :destroy]
+  resources :watchlists, only: [:create, :update, :destroy]
   resources :users, only: [:new, :create, :edit, :update, :destroy]
 
-  root 'users#home'
+  root 'users#show'
 
 end

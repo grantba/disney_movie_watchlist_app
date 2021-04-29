@@ -1,13 +1,13 @@
 <div class="watchlist_index_page">
 <h1>Your Watchlist Categories</h1>
-<%= link_to "Create a New Watchlist", new_watchlist_path(@watchlist) %>
+<%= link_to "Create a New Watchlist", new_user_watchlist_path(current_user.id) %>
 </div>
 <br>
 
 <div id="watchlists_index_links">
-<% if @watchlists.present? %>
+<% if watchlists_by_user.present? %>
 <% @watchlists.each do |wl| %>
-    <h3><%= link_to wl.category_type, user_watchlist_path(current_user.id, wl.id) %></h3>
+    <h2><%= link_to wl.category_type, user_watchlist_path(current_user.id, wl.id) %></h2>
 <% end %>
 <% else %>
     <h3>You have not created any watchlists yet.</h3>

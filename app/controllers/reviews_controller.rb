@@ -1,9 +1,9 @@
 class ReviewsController < ApplicationController
-    before_action :correct_user, only: [:index, :show]
+    before_action :find_reviews_user
     # (other option) skip_before_action :current_user, only: [:index]
 
     def index
-        @reviews = Review.all.where(user_id: current_user.id)
+        helpers.reviews_by_user
     end
 
     def show
@@ -56,4 +56,11 @@ class ReviewsController < ApplicationController
         params.require(:review).permit(:rating, :description, :movie_id, :user_id)
     end
 
+    def find_reviews_user
+        @user = User.find_by(id: params["user_id"])
+        correct_user?(@user)
+    end
+
 end
+
+# User.find_by(id: params["review"]["user_id"])  

@@ -88,14 +88,16 @@
 <% if current_user.movies.include?(@movie) %>
 <h3>Change this Movie's Watchlist</h3>
 <%= form_for :watchlist, url: watchlist_path, method: 'patch' do |form| %>
-    <%= form.collection_select :watchlist_id, watchlist_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist."  %>
+    <%= form.collection_select :watchlist_id, watchlists_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist."  %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
     <%= form.hidden_field :movie_id, value: @movie.id %>
-    <%= form.submit "Add to Watchlist" %>
+    <%= form.submit "Change Watchlist" %>
 <% end %><br>
 <% else %>
 <h3>Add this Movie to a Watchlist</h3>
 <%= form_for :watchlist, url: watchlist_path, method: 'patch' do |form| %>
-    <%= form.collection_select :watchlist_id, watchlist_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist"  %>
+    <%= form.collection_select :watchlist_id, watchlists_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist"  %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
     <%= form.hidden_field :movie_id, value: @movie.id %>
     <%= form.submit "Add to Watchlist" %>
 <% end %><br>
@@ -105,5 +107,5 @@
     <%= form.text_field :category_type, placeholder: "Name your watchlist" %><br>
     <%= form.hidden_field :user_id, value: current_user.id %>
     <%= form.hidden_field :movie_id, value: @movie.id %>
-    <%= form.submit "Add to Watchlist" %>
+    <%= form.submit "Add to New Watchlist" %>
 <% end %>

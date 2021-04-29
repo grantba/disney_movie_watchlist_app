@@ -15,6 +15,6 @@
 <% end %>
 <% else %>
     <h3>You have not created any reviews yet.</h3>.
-    <h3><%= link_to "Create a Review", new_review_path %></h3>
+    <h3><%= link_to "Create a New Review", new_user_review_path(current_user.id) %></h3>
 <% end %>
 </div>

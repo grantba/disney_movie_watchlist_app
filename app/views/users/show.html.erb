@@ -1,5 +1,14 @@
-<h2>Welcome, <%= @user.first_name%> <%= @user.last_name %>!</h2>
+<% if logged_in? %>
 
+<h1>Welcome, <%= current_user.first_name %>!</h1>
 
-# this will be the users homepage once logged in
-# need to add nav bar and other features
+<% else %>
+
+<h1>Welcome to the Disney Movie Watchlist!</h1>
+<p id="link">Please <%= link_to "Sign Up", signup_path %> or <%= link_to "Login", login_path %> to experience the app. This app 
+allows you to browse Disney movies or choose any other movies that you'd like to add to a watchlist. You get to decide 
+the categories for your watchlists and add however many movies you'd like. You can also review movies to help 
+other users decide what movies they'd like to see next. You'll recieve recommended movies that you can add to your 
+own watchlists if you'd like. I hope you enjoy the app! Enjoy browsing all the great Disney selections!</p>
+
+<% end %>
