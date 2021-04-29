@@ -50,14 +50,16 @@
 <h1>Disney Watchlist App Movie Reviews</h1>
 <ul>
 <% @reviews.each do |review| %>
-    <li><%= pluralize(review.rating, "Star") %> - <%= review.description %></li><br>
+    <li><%= pluralize(review.rating, "Star") %> - <%= review.description.capitalize
+     %>
     <% if review.user_id == current_user.id %>
-        <%= link_to "Edit this Review", edit_user_review_path(current_user.id, review.id) %>  |  <%= link_to "Delete this Review", user_review_path(current_user.id, review.id), method: 'delete', data: {confirm: "Are you sure you want to delete this review for #{@movie.Title}?" } %>
+    &emsp;&emsp;<%= link_to "Edit", edit_review_path(review.id) %>  |  <%= link_to "Delete", review_path(review.id), method: 'delete', data: {confirm: "Are you sure you want to delete this review for #{@movie.Title}?" } %>
     <% end %>
+    </li><br>
 <% end %><br><br>
 </ul>
 <% else %>
-<h3>There are no reviews for this movie yet.</h3><br><br>
+<h3>There are no reviews for this movie yet.</h3><br>
 <% end %>
 <h2>Create a New Review for This Movie</h2><br>
 
@@ -81,23 +83,25 @@
 <br><br>
 
 # Add to a side navbar later
-<h2 id="search_movie_link"><%= link_to "Search for Another Movie", movies_path %></h2><br>
+<h2 class="search_movie_link"><%= link_to "Search for Another Movie", movies_path %></h2><br>
 
 <% if current_user.movies.include?(@movie) %>
 <h3>Change this Movie's Watchlist</h3>
-<%= form_for :watchlist, url: user_watchlist_path(current_user.id), method: 'patch', params: { movie_id: @movie.id} do |form| %>
-    <%= form.collection_select :watchlist_id, watchlist_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist"  %>
+<%= form_for :watchlist, url: watchlist_path, method: 'patch' do |form| %>
+    <%= form.collection_select :watchlist_id, watchlist_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist."  %>
+    <%= form.hidden_field :movie_id, value: @movie.id %>
     <%= form.submit "Add to Watchlist" %>
 <% end %><br>
 <% else %>
 <h3>Add this Movie to a Watchlist</h3>
-<%= form_for :watchlist, url: user_watchlist_path(current_user.id), method: 'patch', params: { movie_id: @movie.id} do |form| %>
+<%= form_for :watchlist, url: watchlist_path, method: 'patch' do |form| %>
     <%= form.collection_select :watchlist_id, watchlist_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist"  %>
+    <%= form.hidden_field :movie_id, value: @movie.id %>
     <%= form.submit "Add to Watchlist" %>
 <% end %><br>
 <% end %>
 <h3>Or Create a New Watchlist for this Movie</h3>
-<%= form_for :watchlist, url: user_watchlists_path(current_user.id) do |form| %>
+<%= form_for :watchlist, url: watchlists_path do |form| %>
     <%= form.text_field :category_type, placeholder: "Name your watchlist" %><br>
     <%= form.hidden_field :user_id, value: current_user.id %>
     <%= form.hidden_field :movie_id, value: @movie.id %>

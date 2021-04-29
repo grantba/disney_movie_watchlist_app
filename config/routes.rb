@@ -17,9 +17,11 @@ Rails.application.routes.draw do
   resources :movies, only: [:index, :show, :destroy]
 
   resources :users, only: [:show] do
-    resources :reviews, :watchlists, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    resources :reviews, :watchlists, only: [:index, :show]
   end
 
+  resources :reviews, only: [:new, :create, :edit, :update, :destroy]
+  resources :watchlists, only: [:new, :create, :edit, :update, :destroy]
   resources :users, only: [:new, :create, :edit, :update, :destroy]
 
   root 'users#home'

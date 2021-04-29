@@ -1,7 +1,5 @@
 class UsersController < ApplicationController
-    # before_action :current_user
-    # skip_before_action :current_user, only: [:index]
-    # skip_before_action :current_user, only: [:index] 
+    before_action :correct_user, only: [:edit, :update, :destroy]
 
     def new
         @user = User.new
@@ -16,13 +14,8 @@ class UsersController < ApplicationController
             render :new
         end
     end
-     
-    def edit
-        @user = User.find_by(id: params[:id])
-    end
 
     def update
-        @user = User.find_by(id: params[:id])
         if @user.update(user_params)
             flash[:notice] = "Your account information has been updated successfully."
             redirect_to root_path
@@ -32,17 +25,14 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        @user = User.find_by(id: params[:id])
         user_by_name = @user.first_name
-        @user.destroy    
+        Review.where(user_id: @user.id).delete_all
+        @watchlists = Watchlist.where(user_id: @user.id)
+        @watchlists.each { |wl| wl.movies.clear }
+        @watchlists.delete_all
+        @user.destroy
         flash[:notice] = "We're sad to see you go, #{user_by_name}, but thanks for visiting!"
         redirect_to root_path
-    end
-
-    def home
-        if session[:user_id]
-            @user = User.find_by(id: session[:user_id])
-        end
     end
 
     private

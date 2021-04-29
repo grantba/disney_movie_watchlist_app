@@ -1,4 +1,6 @@
 class WatchlistsController < ApplicationController
+    before_action :correct_user, only: [:index, :show]
+    # (other option) skip_before_action :current_user, only: [:index]
 
     def index
         @watchlists = Watchlist.all.where(user_id: current_user.id)
@@ -6,6 +8,12 @@ class WatchlistsController < ApplicationController
 
     def show
         @watchlist = Watchlist.find_by(id: params[:id])
+        if @watchlist && @watchlist.user_id == current_user.id
+            render :show
+        else
+            flash[:notice] = "You can only view a watchlist that belongs to you."
+            redirect_to user_watchlists_path
+        end
     end
 
     def new
@@ -61,7 +69,7 @@ class WatchlistsController < ApplicationController
         watchlist.movies.clear
         watchlist.destroy
         flash[:notice] = "Your watchlist, #{watchlist_by_name}, has been deleted."
-        redirect_to user_watchlists_path
+        redirect_to user_watchlists_path(current_user.id)
     end
 
     private

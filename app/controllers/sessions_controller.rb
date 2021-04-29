@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
             session[:user_id] = @user.id
             redirect_to root_path
         else
-            flash.now[:notice] = "We could not verify your credentials. Please try logging in again. If you do not have an account already, please sign up instead."
+            flash.now[:notice] = "We could not verify your credentials. Try logging in again. If you do not have an account already, please sign up instead."
             render :new  
         end
     end

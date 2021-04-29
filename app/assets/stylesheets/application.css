@@ -45,7 +45,7 @@
   
   /* Links - change color on hover */
   .topnav a:hover {
-    background-color: #ddd;
+    background-color: #ddd!important;
     color: black;
   }
 
@@ -85,14 +85,9 @@
     color: #e03620;
   }
 
- /* div.field_with_errors {
-    padding: 20px;
-    background-color: #e03620;
-    display: table;
-  } */
-
-  a:link{
-    text-decoration: none!important;
+  a {
+    text-decoration: none;
+    color: black;
   }
 
 
@@ -148,8 +143,9 @@
   }
   
   input[type=submit]:hover {
-    background-color: #ddd;
-  }
+    background-color: #ddd!important;
+    color: black;
+    }
   
   #delete_button {
     width: 20%;
@@ -162,33 +158,32 @@
     cursor: pointer;
   }
 
-  #delete_button:hover {
+  /* #delete_button:hover {
     background-color: #e03620;
-  }
-
-  /* div {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
   } */
 
   h1.movie_show_page {
       text-align: center;
   }
 
-  h2#search_movie_link a {
+  /* .movie_link {
     text-decoration: none;
     color: black;
   }
 
-  h2#search_movie_link {
+  .search_movie_link a {
+    text-decoration: none;
+    color: black;
+  } */
+
+  .search_movie_link {
     text-align: center;
   }
 
-  .alter_reviews_links {
-    text-decoration: none!important;
-    color: black!important;
-  }
+  /* .alter_reviews_links {
+    text-decoration: none;
+    color: black;
+  } */
 
   span#movie_poster {
     display: table;

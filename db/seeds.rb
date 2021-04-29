@@ -26,3 +26,7 @@
 # MovieWatchlist.create(movie_id: 44, watchlist_id: 2)
 # MovieWatchlist.create(movie_id: 410, watchlist_id: 1)
 # MovieWatchlist.create(movie_id: 400, watchlist_id: 2)
+
+# Movie.all.each do |movie|
+#     Api.get_movie_by_id(movie.imdbID)
+# end

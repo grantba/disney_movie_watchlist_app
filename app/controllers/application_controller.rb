@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
     def correct_user
         @user = User.find_by(id: params[:id]) || User.find_by(id: params[:user_id])
-        redirect_to '/', flash[:notice] = "Access Denied." if current_user?(@user)
+        redirect_to '/', notice: "Access Denied." if !current_user?(@user)
     end
 
     def current_user?(user)

@@ -1,4 +1,6 @@
 class ReviewsController < ApplicationController
+    before_action :correct_user, only: [:index, :show]
+    # (other option) skip_before_action :current_user, only: [:index]
 
     def index
         @reviews = Review.all.where(user_id: current_user.id)
@@ -18,6 +20,7 @@ class ReviewsController < ApplicationController
         @movie = Movie.find_by(id: params["movie_id"])
         if @review.save
             @movie.reviews << @review
+            flash[:notice] = "Your review has been added to #{@movie.Title}."
             redirect_to movie_path(@movie)
         else
             flash[:notice] = "There was an error creating your new review for #{@movie.Title}. Please try again."
@@ -32,7 +35,7 @@ class ReviewsController < ApplicationController
     def update
         @review = Review.find_by(id: params[:id])
         if @review.update(review_params)
-            redirect_to user_review_path(current_user.id, @review)
+            redirect_to review_path(@review)
         else
             render :edit
         end

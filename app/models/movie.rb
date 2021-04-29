@@ -3,6 +3,7 @@ class Movie < ApplicationRecord
     has_and_belongs_to_many :watchlists, through: :movie_watchlists
     has_many :users, through: :watchlists
     has_many :reviews
+    default_scope { order(:Title)}
 
     def self.make_a_movie(movies_array)
         movies_array.each do |movie|
@@ -40,11 +41,5 @@ class Movie < ApplicationRecord
             end
         end
     end 
-
-    def self.title_and_date
-        @movies_array ||= self.all.map do |movie|
-            {Title: "#{movie.Title} #{movie.Year}", imdbID: movie.imdbID}
-        end
-    end
 
 end
