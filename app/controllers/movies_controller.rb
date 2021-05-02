@@ -28,20 +28,19 @@ class MoviesController < ApplicationController
     #will have this option on the watchlist show page
     def destroy
         @user = User.find_by(id: current_user.id)
-        @movie = Movie.find_by(id: params[:id])
-        @watchlist = Watchlist.find_by(id: params[:watchlist_id])
-        @movie_watchlist = MovieWatchlist.where({movie_id: @movie.id, watchlist_id: @watchlist.id})
-        if @user.movies.include?(@movie) && @user.watchlists.include?(@watchlist)
+        correct_user?(@user)
+        @movie = Movie.find_by(id: params["id"])
+        @watchlist = Watchlist.find_by(id: params["watchlist_id"])
+        if @movie && @watchlist && @user.movies.include?(@movie) && @user.watchlists.include?(@watchlist)
             if @watchlist.movies.delete(@movie)
-                flash[:notice] = "#{@movie.Title} has been removed from your #{@watchlist.category_type} watchlist."
+                flash[:notice] = "#{@movie.Title} has been removed from your #{@watchlist.category_type.capitalize} watchlist."
                 redirect_to user_watchlist_path(@user.id, @watchlist.id)
             else
-                flash[:notice] = "You can only delete movies that belong to your own account."
+                flash[:notice] = "There was a problem deleting this movie from your watchlist. Please try again."
                 redirect_to user_watchlist_path(@user.id, @watchlist.id)
             end
         else
-            flash[:notice] = "There was a problem deleting this movie from your watchlist. Please try again."
-            redirect_to user_watchlist_path(@user.id, @watchlist.id)
+            redirect_to user_watchlist_path(@user.id, @watchlist.id), notice: "Access Denied. You may only access, add to, update, or delete your own account information." 
         end
     end
 

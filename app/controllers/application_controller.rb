@@ -10,11 +10,17 @@ class ApplicationController < ActionController::Base
     end
 
     def correct_user?(user)
-        redirect_to '/', notice: "Access Denied. You may only access, add to, or update your own account information." if current_user != @user
+        if current_user != user
+            handle_unverified_request
+        end
     end
 
     def redirect_if_not_logged_in
         redirect_to '/', flash[:notice] = "You must be logged in to access this page." if current_user.nil?
+    end
+
+    def handle_unverified_request
+        redirect_to '/', notice: "Access Denied. You may only access, add to, update, or delete your own account information." 
     end
 
 end

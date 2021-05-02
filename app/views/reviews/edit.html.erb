@@ -1,6 +1,6 @@
 <% if @review.errors.any? %>
   <div id="error_explanation">
-    <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being edited:</h2>
+    <h2><%= pluralize(@review.errors.count, "error") %> must be corrected before your review can be updated:</h2>
 
     <ul>
       <% @review.errors.full_messages.each do |msg| %>
@@ -10,10 +10,26 @@
   </div>
 <% end %>
 
-<%= form_with model: @review, url: user_review_path(current_user.id, @review.id), method: 'patch' do |f| %>
-    <%= f.label :rating, "Rating:" %> 
-    <%= f.number_field :rating, placeholder: "Give this movie 1-5 stars!" %><br>
-    <%= f.label :description, "Description:" %> 
-    <%= f.text_field :description, placeholder: "Give this movie a review" %><br>
-    <%= f.submit "Edit Review" %>
+<div class="review_edit_page">
+<h2>Edit your Review for</h2>
+<h2><%= @review.movie.Title %></h2>
+</div>
+<br><br>
+
+<%= form_with model: @review, url: review_path(@review), method: 'patch' do |f| %>
+    <%= f.label :rating, "★ Star" %>
+    <%= f.radio_button :rating, 1 %>&emsp;
+    <%= f.label :rating, "★★ Stars" %>
+    <%= f.radio_button :rating, 2 %>&emsp;
+    <%= f.label :rating, "★★★ Stars" %>
+    <%= f.radio_button :rating, 3 %>&emsp;
+    <%= f.label :rating, "★★★★ Stars" %>
+    <%= f.radio_button :rating, 4 %>&emsp;
+    <%= f.label :rating, "★★★★★ Stars" %>
+    <%= f.radio_button :rating, 5 %><br><br>
+    <%= f.label :description, "Description" %>
+    <%= f.text_field :description %><br>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field :movie_id, value: @review.movie_id %>
+    <%= f.submit "Update Review" %>
 <% end %>

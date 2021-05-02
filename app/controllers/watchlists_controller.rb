@@ -3,7 +3,9 @@ class WatchlistsController < ApplicationController
     before_action :find_watchlists_user_for_forms, only: [:update, :create]
     before_action :users_watchlist, only: [:show, :edit, :destroy]
 
-    # user_id
+    # params user_id for index
+
+    # params user_id
     def show
         if @watchlist && @watchlist.user_id == current_user.id
             render :show
@@ -12,12 +14,12 @@ class WatchlistsController < ApplicationController
         end
     end
 
-    # user_id
+    # params user_id
     def new
         @watchlist = Watchlist.new
     end
 
-    # watchlist/user_id from all
+    # params watchlist/user_id from all routes
     def create
         @watchlist = Watchlist.new(watchlist_params.except("movie_id"))
         if params["watchlist"]["movie_id"]
@@ -26,39 +28,42 @@ class WatchlistsController < ApplicationController
                 @watchlist.movies << @movie
                 redirect_to user_watchlist_path(current_user.id, @watchlist.id)
             else
-                redirect_to movie_path(@movie), notice: "There was an error creating your new watchlist and adding #{@movie.Title} to it. Please try again."
+                redirect_to user_watchlists_path(current_user), notice: "There was an error creating your new watchlist. Please try again."
             end
         else 
             if @watchlist.save
                 redirect_to user_watchlist_path(current_user.id, @watchlist.id)
             else
-                flash.now[:notice] = "There was an error creating your new watchlist. Please try again."
                 render :new
             end
         end
     end
 
-    # user_id for edit
+    # params user_id for edit
 
-    # watchlist/user_id from all
+    # params watchlist/user_id from all routes
     def update
         @watchlist = Watchlist.find_by(id: params["watchlist"]["watchlist_id"])
-        if params["watchlist"]["movie_id"]
-            @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
-            @watchlist.movies << @movie
-            if @movie && @watchlist.save
+        if @watchlist && @watchlist.user_id == current_user.id
+            if params["watchlist"]["movie_id"]
+                @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+                @watchlist.movies << @movie if @movie
+                if @watchlist.save
+                    redirect_to user_watchlist_path(current_user.id, @watchlist)
+                else
+                    redirect_to movies_path, notice: "There was an error adding this movie to your watchlist. Please try again."
+                end
+            elsif @watchlist.update(watchlist_params)
                 redirect_to user_watchlist_path(current_user.id, @watchlist)
             else
-                redirect_to movie_path(@movie), notice: "There was an error adding #{@movie.Title} to your watchlist. Please try again."
+                render :edit
             end
-        elsif @watchlist.update(watchlist_params)
-            redirect_to user_watchlist_path(current_user.id, @watchlist)
         else
-            render :edit
+            redirect_to "/", notice: "Access Denied. You may only access, add to, or update your own account information."      
         end
     end
 
-    # params only has watchlist_id
+    # params only has watchlist's id
     def destroy
         if @watchlist && @watchlist.user_id == current_user.id
             watchlist_by_name = @watchlist.category_type

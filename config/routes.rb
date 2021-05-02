@@ -15,10 +15,14 @@ Rails.application.routes.draw do
     resources :reviews, only: [:create]
   end
  
-  resources :movies, only: [:index, :show]
+  resources :movies, only: [:index, :show, :destroy]
 
   resources :users, only: [:show] do
-    resources :reviews, :watchlists, only: [:index, :show, :edit, :new]
+    resources :reviews, only: [:index, :edit, :new]
+  end
+
+  resources :users, only: [:show] do
+    resources :watchlists, only: [:index, :show, :edit, :new]
   end
 
   resources :reviews, only: [:create, :update, :destroy]

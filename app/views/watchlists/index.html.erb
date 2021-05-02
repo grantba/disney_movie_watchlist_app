@@ -2,7 +2,7 @@
 <h1>Your Watchlist Categories</h1>
 <%= link_to "Create a New Watchlist", new_user_watchlist_path(current_user.id) %>
 </div>
-<br>
+<br><br>
 
 <div id="watchlists_index_links">
 <% if watchlists_by_user.present? %>
@@ -10,6 +10,6 @@
     <h2><%= link_to wl.category_type, user_watchlist_path(current_user.id, wl.id) %></h2>
 <% end %>
 <% else %>
-    <h3>You have not created any watchlists yet.</h3>
+    <h2>You have not created any watchlists yet.</h2>
 <% end %>
 </div>

@@ -11,9 +11,13 @@
   </head>
 
   <body>
-
-  <h1 class="header"><a href="http://cliparts.co/clipart/2362985" target="_blank" title="Image from cliparts.co"><img src="http://cliparts.co/cliparts/6Ty/Xxr/6TyXxrb8c.jpg" width="350" alt="Mickey mouse clip art 2014 | Clipart Panda - Free Clipart Images" /></a>
-  <br>Disney Movie Watchlist</h1>
+  
+  <div id="header_images">
+  <%= image_tag("film_reel.jfif", alt: "film_reel") %>
+  <a href="http://cliparts.co/clipart/2362985" target="_blank" title="Image from cliparts.co"><img src="http://cliparts.co/cliparts/6Ty/Xxr/6TyXxrb8c.jpg" width="100" alt="Mickey mouse clip art 2014 | Clipart Panda - Free Clipart Images" /></a>
+  <%= image_tag("film_reel.jfif", alt: "film_reel") %>
+  </div>
+  <h1 class="header">Disney Movie Watchlist</h1>
   <br>
 
   <div class="topnav">
@@ -37,6 +41,7 @@
       <div class="flash">
         <%= msg %>
       </div>
+      <% flash.notice.clear %>
     <% end %>
     <br>
   <% end %>

@@ -1,53 +1,57 @@
 class ReviewsController < ApplicationController
-    before_action :find_reviews_user
-    # (other option) skip_before_action :current_user, only: [:index]
+    before_action :find_reviews_user, only: [:index, :edit, :new]
+    before_action :find_reviews_user_for_forms, only: [:update, :create]
+    before_action :users_review, only: [:edit, :update, :destroy]
 
-    def index
-        helpers.reviews_by_user
-    end
+    # params user_id for index
 
-    def show
-        @review = Review.find_by(id: params[:id])
-    end
-
+    # params user_id
     def new
         @review = Review.new
     end
 
-    #nested with movie show 
+    # params review/user_id from all routes
+    # nested with movie show 
     def create
         @review = Review.new(review_params)
-        @movie = Movie.find_by(id: params["movie_id"])
-        if @review.save
+        @movie = Movie.find_by(id: params["review"]["movie_id"])
+        if @movie && @review.save
             @movie.reviews << @review
-            flash[:notice] = "Your review has been added to #{@movie.Title}."
+            flash[:notice] = "Your review has been added to the movie #{@movie.Title}."
             redirect_to movie_path(@movie)
         else
-            flash[:notice] = "There was an error creating your new review for #{@movie.Title}. Please try again."
-            redirect_to movie_path(@movie)
+            flash[:notice] = "There was an error creating your new review. All fields must be filled out completely. Please try again."
+            render :new
         end
     end
 
-    def edit
-        @review = Review.find_by(id: params[:id])
-    end
+    # params user_id for edit 
 
+    # params review/user_id from all routes
     def update
-        @review = Review.find_by(id: params[:id])
-        if @review.update(review_params)
-            redirect_to review_path(@review)
+        if @review && @review.user_id == current_user.id
+            @movie = Movie.find_by(id: params["review"]["movie_id"])
+            if @movie && @review.update(review_params)
+                redirect_to user_reviews_path(current_user.id)
+            else
+                render :edit
+            end
         else
-            render :edit
+            redirect_to "/", notice: "Access Denied. You may only access, add to, or update your own account information."
         end
     end
 
+    # params only has review's id
     #nested with movie show 
     def destroy
-        review = Review.find_by(id: params[:id])
-        movie_by_name = review.movie.Title
-        review.destroy    
-        flash[:notice] = "Your review for #{movie_by_name} has been deleted."
-        redirect_to user_reviews_path
+        if @review && @review.user_id == current_user.id
+            movie_by_name = @review.movie.Title
+            @review.destroy    
+            flash[:notice] = "Your review for #{movie_by_name} has been deleted."
+            redirect_to user_reviews_path(current_user)
+        else
+            redirect_to "/", notice: "Access Denied. You may only access, add to, or update your own account information."
+        end
     end
     
     private
@@ -56,11 +60,18 @@ class ReviewsController < ApplicationController
         params.require(:review).permit(:rating, :description, :movie_id, :user_id)
     end
 
+    def users_review
+        @review = Review.find_by(id: params[:id])
+    end
+
     def find_reviews_user
         @user = User.find_by(id: params["user_id"])
         correct_user?(@user)
     end
 
-end
+    def find_reviews_user_for_forms
+        @user = User.find_by(id: params["review"]["user_id"]) 
+        correct_user?(@user)
+    end
 
-# User.find_by(id: params["review"]["user_id"])  
+end

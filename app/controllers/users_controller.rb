@@ -18,18 +18,16 @@ class UsersController < ApplicationController
     def update
         if @user.update(user_params)
             redirect_to root_path, notice: "Your account information has been updated successfully."
-
         else
             render :edit
         end
     end
 
     def destroy
-        user_by_name = @user.first_name
+        user_by_name = @user.first_name.capitalize
         Review.where(user_id: @user.id).delete_all
-        helpers.watchlists_by_user
-        @watchlists.each { |wl| wl.movies.clear }
-        @watchlists.delete_all
+        @watchlists = helpers.watchlists_by_user.each { |wl| wl.movies.clear }
+        @watchlists.each { |wl| wl.destroy }
         @user.destroy
         redirect_to root_path, notice: "We're sad to see you go, #{user_by_name}, but thanks for visiting!"
 

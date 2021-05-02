@@ -1,6 +1,6 @@
 <% if @review.errors.any? %>
   <div id="error_explanation">
-    <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
+    <h2><%= pluralize(@review.errors.count, "error") %> must be corrected before your review can be saved:</h2>
 
     <ul>
       <% @review.errors.full_messages.each do |msg| %>
@@ -10,9 +10,15 @@
   </div>
 <% end %>
 
-<h2>Create a New Review for a Movie</h2><br>
-<%= form_with model: @review, url: movie_reviews_path(@movie) do |f| %>
-  <%= f.label :rating, "★ Star" %>
+<div class="review_new_page">
+<h2>Create a New Review for one of your Movies</h2>
+</div>
+<br>
+
+<%= form_with model: @review, url: movie_reviews_path(:movie), method: 'post' do |f| %>
+  <h2><%= f.label "Pick from your current list of movies:" %></h2>
+  <%= f.collection_select :movie_id, movies_by_user, :id, :Title, prompt: "Choose a Movie."  %>
+  <br><br><%= f.label :rating, "★ Star" %>
   <%= f.radio_button :rating, 1 %>&emsp;
   <%= f.label :rating, "★★ Stars" %>
   <%= f.radio_button :rating, 2 %>&emsp;
@@ -25,6 +31,5 @@
   <%= f.label :description, "Description:" %><br><br>
   <%= f.text_field :description %><br><br>
   <%= f.hidden_field :user_id, value: current_user.id %>
-  <%= f.hidden_field :movie_id, value: @movie.id %>
   <%= f.submit "Submit Review" %>
 <% end %>
