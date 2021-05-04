@@ -17,11 +17,14 @@ class ReviewsController < ApplicationController
         @movie = Movie.find_by(id: params["review"]["movie_id"])
         if @movie && @review.save
             @movie.reviews << @review
-            flash[:notice] = "Your review has been added to the movie #{@movie.Title}."
-            redirect_to movie_path(@movie)
+            redirect_to movie_path(@movie), notice: "Your review has been added to the movie #{@movie.Title}."
         else
-            flash[:notice] = "There was an error creating your new review. All fields must be filled out completely. Please try again."
-            render :new
+            if @user.movies.include?(@movie)
+                flash.now[:notice] = "There was an error creating your new review. All fields must be filled out completely. Please try again."
+                render :new
+            else
+                redirect_to new_user_review_path(current_user), notice: "There was an error creating your new review. All fields must be filled out completely. Please try again."
+            end
         end
     end
 
@@ -34,6 +37,7 @@ class ReviewsController < ApplicationController
             if @movie && @review.update(review_params)
                 redirect_to user_reviews_path(current_user.id)
             else
+                flash.now[:notice] = "There was an error updating this review. Please try again."
                 render :edit
             end
         else

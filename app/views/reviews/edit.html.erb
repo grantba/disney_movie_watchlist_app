@@ -1,4 +1,4 @@
-<% if @review.errors.any? %>
+<% if @review && @review.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(@review.errors.count, "error") %> must be corrected before your review can be updated:</h2>
 

@@ -11,11 +11,8 @@
 
 <%= form_for(@user, url: signup_path) do |f| %>
 
-    <%= f.label :first_name, "First Name:" %>
-    <%= f.text_field :first_name %>
-
-    <%= f.label :last_name, "Last Name:" %>
-    <%= f.text_field :last_name %>
+    <%= f.label :name, "Name:" %>
+    <%= f.text_field :name %>
 
     <%= f.label :username, "Username:" %>
     <%= f.text_field :username %>
@@ -29,3 +26,5 @@
     <%= f.submit "Sign Up" %>
 
 <% end %>
+
+<br><br><h3 class="third_party_login_links"><%= link_to "If you would like to log in with Facebook, GitHub, or Google, please click here!", login_path %></h3>

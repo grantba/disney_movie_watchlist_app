@@ -1,4 +1,4 @@
-<% if @watchlist.errors.any? %>
+<% if @watchlist && @watchlist.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(@watchlist.errors.count, "error") %> must be corrected before your watchlist can be updated:</h2>
 

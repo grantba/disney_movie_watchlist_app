@@ -4,9 +4,17 @@ class User < ApplicationRecord
     has_many :reviews
     has_many :movies, through: :watchlists
     
-    validates :first_name, :last_name, :username, :email, presence: true
-    validates :username, uniqueness: { message: "has already been taken." }, length: { in: 6..20, message: "must be between 6-20 characters in length." }
-    validates :password, length: { minimum: 6, message: "must be at least 6 characters in length." }
+    validates :name, :username, :email, presence: true
     validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: "must be a valid email address, for example, user@email.com." }
+
+    def self.from_omniauth(response)
+        User.find_or_create_by(provider: response['provider'], uid: response['uid']) do |u|
+            u.name = response['info']['name']
+            u.username = response['info']['email']
+            u.email = response['info']['email']
+            u.image = response['info']['image']
+            u.password = SecureRandom.hex(15)
+        end
+    end
 
 end

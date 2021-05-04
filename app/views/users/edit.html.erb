@@ -1,4 +1,4 @@
-<% if @user.errors.any? %>
+<% if @user && @user.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(@user.errors.count, "error") %> must be corrected before your account can be updated:</h2>
     <ul>
@@ -12,11 +12,8 @@
 <h2>Only update the information you wish you change.</h2>
 
 <%= form_for(@user) do |f| %>
-  <%= f.label :first_name, "First Name:" %>
-  <%= f.text_field :first_name %>
-
-  <%= f.label :last_name, "Last Name:" %>
-  <%= f.text_field :last_name %>
+  <%= f.label :first_name, "Name:" %>
+  <%= f.text_field :name %>
 
   <%= f.label :username, "Username:" %>
   <%= f.text_field :username %>
@@ -30,4 +27,5 @@
   <%= f.submit "Update Information" %>
 <% end %><br>
 
-<div id="delete_button"><%= button_to "Delete Account", user_path(@user), method: 'delete', data: {confirm: "Are you sure you want to delete your account #{@user.first_name}?"} %></div>
+<div id="delete_button"><%= button_to "Delete Account", user_path(@user), method: 'delete', data: {confirm: "Are you sure you want to delete your account #{users_name}?"} %></div>
+

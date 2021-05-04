@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get '/signup' => 'users#new'
   post '/signup' => 'users#create'
+  match '/auth/:provider/callback' => 'sessions#create', via: [:get, :post]
 
   get '/homepage' => 'users#show'
   get '/login' => 'sessions#new'

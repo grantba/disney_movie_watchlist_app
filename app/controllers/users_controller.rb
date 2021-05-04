@@ -24,19 +24,18 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        user_by_name = @user.first_name.capitalize
+        user_by_name = @user.name.capitalize
         Review.where(user_id: @user.id).delete_all
         @watchlists = helpers.watchlists_by_user.each { |wl| wl.movies.clear }
         @watchlists.each { |wl| wl.destroy }
         @user.destroy
         redirect_to root_path, notice: "We're sad to see you go, #{user_by_name}, but thanks for visiting!"
-
     end
 
     private
 
     def user_params
-        params.require(:user).permit(:first_name, :last_name, :username, :email, :password)
+        params.require(:user).permit(:name, :username, :email, :password, :provider, :uid, :image)
     end
 
     def find_user

@@ -30,8 +30,12 @@
   <%= link_to "Search Movies", movies_path %>
   <%= link_to "Watchlists", user_watchlists_path(current_user.id) %>
   <%= link_to "Reviews", user_reviews_path(current_user.id) %>
-  <%= link_to "Logout", logout_path, method: 'delete', style: 'float: right' %>
-  <%= link_to "Edit My Info", edit_user_path(current_user.id), style: 'float: right' %>
+    <% if current_user.uid.blank? %>
+      <%= link_to "Logout", logout_path, method: 'delete', style: 'float: right' %>
+      <%= link_to "Edit My Info", edit_user_path(current_user.id), style: 'float: right' %>
+    <% else %>
+      <%= link_to "Logout", logout_path, method: 'delete', style: 'float: right' %>
+    <% end %>
   <% end %>
   </div>
   <br><br>
@@ -41,7 +45,7 @@
       <div class="flash">
         <%= msg %>
       </div>
-      <% flash.notice.clear %>
+      <% flash.delete :notice %>
     <% end %>
     <br>
   <% end %>

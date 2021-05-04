@@ -41,3 +41,12 @@ yarn-debug.log*
 
 .notes
 .env
+
+
+.host.cert
+.host.key
+.cert
+.key
+.master.key
+.master
+.host

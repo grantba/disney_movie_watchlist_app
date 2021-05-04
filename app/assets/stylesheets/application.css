@@ -20,6 +20,10 @@
     height: 10vh;
  }
 
+ .third_party_login_links {
+   text-align: center;
+ }
+
  .header {
     background-color: white;
     text-align: center;
