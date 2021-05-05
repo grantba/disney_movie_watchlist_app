@@ -5,6 +5,8 @@ class Movie < ApplicationRecord
     has_many :reviews
     default_scope { order(:Title)}
 
+    
+
     def self.make_a_movie(movies_array)
         movies_array.each do |movie|
           Movie.create(movie)

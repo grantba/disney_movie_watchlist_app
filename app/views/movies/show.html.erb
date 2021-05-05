@@ -1,49 +1,18 @@
-# Need to refactor logic to movies_helper later
-<% if !@movie.Title.blank? && @movie.Title != "N/A" %>
-<h1 class='movie_index_and_show_page'><%= @movie.Title %></h1>
-<% end %>
-<% if !@movie.Poster.blank? && @movie.Poster != "N/A" %>
-<span checked=false, id='movie_poster'><%= image_tag(@movie.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image') %></span>
-<% end %>
-<% if !@movie.Rated.blank? && @movie.Rated != "N/A" %>
-<p>Rated: <%= @movie.Rated %></p>
-<% end %>
-<% if !@movie.Released.blank? && @movie.Released != "N/A" %>
-<p>Released: <%= Time.strptime("#{@movie.Released}", "%d %b %Y").strftime("%B %d, %Y") %></p>
-<% end %>
-<% if !@movie.Runtime.blank? && @movie.Runtime != "N/A" %>
-<p>Runtime: <%= @movie.Runtime.gsub("min", "minutes") %></p>
-<% end %>
-<% if !@movie.Genre.blank? && @movie.Genre != "N/A" %>
-<p>Genre: <%= @movie.Genre %></p>
-<% end %>
-<% if !@movie.Director.blank? && @movie.Director != "N/A" %>
-<p>Director: <%= @movie.Director %></p>
-<% end %>
-<% if !@movie.Writer.blank? && @movie.Writer != "N/A" %>
-<p>Writer: <%= @movie.Writer %></p>
-<% end %>
-<% if !@movie.Actors.blank? && @movie.Actors != "N/A" %>
-<p>Actors/Actresses: <%= @movie.Actors %></p>
-<% end %>
-<% if !@movie.Plot.blank? && @movie.Plot != "N/A" %>
-<p>Plot: <%= @movie.Plot %></p>
-<% end %>
-<% if !@movie.Awards.blank? && @movie.Awards != "N/A" %>
-<p>Awards: <%= @movie.Awards %></p>
-<% end %>
-<% if !@movie.Ratings.blank? && @movie.Ratings != "N/A" %>
-<p>ratings: <%= @movie.Ratings.gsub("}", "").gsub("[", "").gsub("]", "").gsub("\{\"Source\"=>\"", "").gsub("\"\, \"Value\"=>\"", " - ").gsub("\"", "") %>
-<% end %>
-<% if !@movie.BoxOffice.blank? && @movie.BoxOffice != "N/A" %>
-<p>Box Office: <%= @movie.BoxOffice %></p>
-<% end %>
-<% if !@movie.Production.blank? && @movie.Production != "N/A" %>
-<p>Production: <%= @movie.Production %></p>
-<% end %>
-<% if !@movie.imdbID.blank? && @movie.imdbID != "N/A" %>
-<p>Imdb Movie Link: <a href="<%=@movie.imdbID.gsub("tt", "https://www.imdb.com/title/tt")%>" target="_blank"> Click here to see more information about this movie</a></p>
-<% end %>
+<%= movie_title %>
+<%= movie_poster %>
+<%= movie_rated %>
+<%= movie_released %>
+<%= movie_runtime %>
+<%= movie_genre %>
+<%= movie_director %>
+<%= movie_writer %>
+<%= movie_actors %>
+<%= movie_plot %>
+<%= movie_awards %>
+<%= movie_ratings %>
+<%= movie_boxoffice %>
+<%= movie_production %>
+<%= movie_imdbID %>
 <br><br>
 
 <% if @reviews.any? %>
@@ -81,7 +50,6 @@
   <% end %>
 <br><br>
 
-# Add to a side navbar later
 <h2 class="search_movie_link"><%= link_to "Search for Another Movie", movies_path %></h2><br>
 
 <% if current_user.movies.include?(@movie) %>
