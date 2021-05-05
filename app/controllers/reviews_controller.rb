@@ -13,10 +13,8 @@ class ReviewsController < ApplicationController
     # params review/user_id from all routes
     # nested with movie show 
     def create
-        @review = Review.new(review_params)
-        @movie = Movie.find_by(id: params["review"]["movie_id"])
-        if @movie && @review.save
-            @movie.reviews << @review
+        @movie = Movie.find_by(id: params["review"]["id"]) || Movie.find_by(id: params["review"]["movie_id"])
+        if @movie && @movie.reviews.create(review_params)
             redirect_to movie_path(@movie), notice: "Your review has been added to the movie #{@movie.Title}."
         else
             if @user.movies.include?(@movie)
@@ -61,7 +59,7 @@ class ReviewsController < ApplicationController
     private
 
     def review_params
-        params.require(:review).permit(:rating, :description, :movie_id, :user_id)
+        params.require(:review).permit(:rating, :description, :movie_id, :user_id, :id)
     end
 
     def users_review

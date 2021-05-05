@@ -35,6 +35,7 @@
       <%= link_to "Edit My Info", edit_user_path(current_user.id), style: 'float: right' %>
     <% else %>
       <%= link_to "Logout", logout_path, method: 'delete', style: 'float: right' %>
+      <%= link_to "Delete Account", user_path(current_user), method: 'delete', style: 'float: right', data: {confirm: "Are you sure you want to delete your account #{users_name}?"} %>
     <% end %>
   <% end %>
   </div>

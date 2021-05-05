@@ -11,25 +11,19 @@
 <% end %>
 
 <div class="review_new_page">
-<h2>Create a New Review for one of your Movies</h2>
+<h2>Create a New Review</h2>
 </div>
 <br>
 
-<%= form_with model: @review, url: movie_reviews_path(:movie), method: 'post' do |f| %>
-  <h2><%= f.label "Pick from your current list of movies:" %></h2>
-  <%= f.collection_select :movie_id, movies_by_user, :id, :Title, prompt: "Choose a Movie."  %>
-  <br><br><%= f.label :rating, "★ Star" %>
-  <%= f.radio_button :rating, 1 %>&emsp;
-  <%= f.label :rating, "★★ Stars" %>
-  <%= f.radio_button :rating, 2 %>&emsp;
-  <%= f.label :rating, "★★★ Stars" %>
-  <%= f.radio_button :rating, 3 %>&emsp;
-  <%= f.label :rating, "★★★★ Stars" %>
-  <%= f.radio_button :rating, 4 %>&emsp;
-  <%= f.label :rating, "★★★★★ Stars" %>
-  <%= f.radio_button :rating, 5 %><br><br>
-  <%= f.label :description, "Description:" %><br><br>
-  <%= f.text_field :description %><br><br>
-  <%= f.hidden_field :user_id, value: current_user.id %>
+<%= form_with model: @review, url: reviews_path, method: 'post' do |f| %>
+
+  <h3><%= f.label "Pick from your current list of movies:" %></h3>
+  <%= f.collection_select :id, movies_by_user, :id, :Title, prompt: "Select a Movie" %>
+
+  <h3><%= f.label "Or choose from the full list of movies:" %></h3>
+  <%= f.select "movie_id", options_for_select(movies_for_review.map { |obj| [obj[:Title], obj[:id]] }), prompt: "Select a Movie" %>
+  
+  <br><br><%= render partial: 'form', locals: {movie_review: f} %>
+  
   <%= f.submit "Submit Review" %>
 <% end %>

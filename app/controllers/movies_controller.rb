@@ -2,7 +2,7 @@ class MoviesController < ApplicationController
 
     def show
         @movie = Movie.find_by(id: params[:id])
-        @reviews = Review.all.where(movie_id: @movie.id)
+        @reviews = @movie.reviews
     end
 
     def search_by_name

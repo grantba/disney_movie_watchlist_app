@@ -1,4 +1,4 @@
-<%= movie_title %>
+<%= movie_title %><br>
 <%= movie_poster %>
 <%= movie_rated %>
 <%= movie_released %>
@@ -15,64 +15,45 @@
 <%= movie_imdbID %>
 <br><br>
 
-<% if @reviews.any? %>
+<br>
 <h1>Disney Watchlist App Movie Reviews</h1>
-<ul>
-<% @reviews.each do |review| %>
-    <li><%= pluralize(review.rating, "Star") %> - <%= review.description.capitalize%>
-    <% if review.user_id == current_user.id %>
-    &emsp;&emsp;<%= link_to "Edit", edit_user_review_path(current_user.id, review.id) %>  |  <%= link_to "Delete", review_path(review.id), method: 'delete', data: {confirm: "Are you sure you want to delete this review for #{@movie.Title}?" } %>
-    <% end %>
-    </li><br>
-<% end %><br><br>
-</ul>
-<% else %>
-<h3>There are no reviews for this movie yet.</h3><br>
-<% end %>
-<h2>Create a New Review for This Movie</h2><br>
+<%= render(@reviews) || "There are no reviews for this movie yet." "<br><br><br>".html_safe %> 
 
-<%= form_for :review, url: movie_reviews_path(@movie) do |f| %>
-    <%= f.label :rating, "★ Star" %>
-    <%= f.radio_button :rating, 1 %>&emsp;
-    <%= f.label :rating, "★★ Stars" %>
-    <%= f.radio_button :rating, 2 %>&emsp;
-    <%= f.label :rating, "★★★ Stars" %>
-    <%= f.radio_button :rating, 3 %>&emsp;
-    <%= f.label :rating, "★★★★ Stars" %>
-    <%= f.radio_button :rating, 4 %>&emsp;
-    <%= f.label :rating, "★★★★★ Stars" %>
-    <%= f.radio_button :rating, 5 %><br><br>
-    <%= f.label :description, "Description:" %><br><br>
-    <%= f.text_field :description %><br><br>
-    <%= f.hidden_field :user_id, value: current_user.id %>
+<br><h3>Create a New Review for This Movie</h3><br>
+
+<%= form_for :review, url: movie_reviews_path(@movie) do |f| %> 
+
+    <%= render partial: 'reviews/form', locals: {movie_review: f} %>
+    
     <%= f.hidden_field :movie_id, value: @movie.id %>
     <%= f.submit "Submit Review" %>
   <% end %>
 <br><br>
 
-<h2 class="search_movie_link"><%= link_to "Search for Another Movie", movies_path %></h2><br>
+<br><h2 class="search_movie_link"><%= link_to "Search for Another Movie", movies_path %></h2><br>
 
-<% if current_user.movies.include?(@movie) %>
-<h3>Add this Movie to one of Your Watchlists</h3>
-<%= form_for :watchlist, url: watchlist_path, method: 'patch' do |form| %>
-    <%= form.collection_select :watchlist_id, watchlists_by_user, :id, :category_type, prompt: "Choose Watchlist."  %>
-    <%= form.hidden_field :user_id, value: current_user.id %>
-    <%= form.hidden_field :movie_id, value: @movie.id %>
-    <%= form.submit "Change Watchlist" %>
-<% end %><br>
-<% else %>
+<% if current_user.watchlists.any? %>
 <h3>Add this Movie to a Watchlist</h3>
 <%= form_for :watchlist, url: watchlist_path, method: 'patch' do |form| %>
     <%= form.collection_select :watchlist_id, watchlists_by_user, :id, :category_type, prompt: "Choose from an Existing Watchlist"  %>
     <%= form.hidden_field :user_id, value: current_user.id %>
     <%= form.hidden_field :movie_id, value: @movie.id %>
-    <%= form.submit "Add to Watchlist" %>
+    <%= form.submit "Add Movie to Watchlist" %>
 <% end %><br>
-<% end %>
 <h3>Or Create a New Watchlist for this Movie</h3>
 <%= form_for :watchlist, url: watchlists_path do |form| %>
-    <%= form.text_field :category_type, placeholder: "Name your watchlist" %><br>
+    <%= form.text_field :category_type, placeholder: "Name your Watchlist" %><br>
     <%= form.hidden_field :user_id, value: current_user.id %>
     <%= form.hidden_field :movie_id, value: @movie.id %>
-    <%= form.submit "Add to New Watchlist" %>
+    <%= form.submit "Add Movie to Watchlist" %>
 <% end %>
+<% else %>
+<h3>Create a Watchlist for this Movie</h3>
+<%= form_for :watchlist, url: watchlists_path do |form| %>
+    <%= form.text_field :category_type, placeholder: "Name your Watchlist" %><br>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+    <%= form.hidden_field :movie_id, value: @movie.id %>
+    <%= form.submit "Add Movie to Watchlist" %>
+<% end %>
+<% end %>
+

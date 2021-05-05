@@ -1,21 +1,19 @@
 module MoviesHelper
 
     def title_and_date
-        @movies_array ||= Movie.all.map do |movie|
+        movies = Movie.all.map do |movie|
             {Title: "#{movie.Title} #{movie.Year}", imdbID: movie.imdbID}
         end
     end
 
+    def movies_for_review
+        movies = Movie.all.map do |movie|
+            {Title: "#{movie.Title} #{movie.Year}", id: movie.id}
+        end
+    end
+
     def movies_by_user
-        watchlists_by_user
-        mwls = watchlists_by_user.map do |wl|
-            MovieWatchlist.where(watchlist_id: wl.id)
-        end
-        @mwls = mwls.reject(&:blank?)
-        @movies = @mwls.flatten.map do |mwl|
-            Movie.where(id: mwl.movie_id)
-        end
-        @movies.flatten
+        movies = current_user.movies
     end
 
     def show_movie_data

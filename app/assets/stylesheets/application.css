@@ -194,10 +194,11 @@
   } */
 
   span#movie_poster {
+    /* border: 10px solid rgb(31, 30, 30); */
     display: table;
     margin-left: auto;
     margin-right: auto;
-    width: 150;
+    flex: auto;
   }
 
   div.watchlist_show_page {
@@ -227,6 +228,10 @@
  }
 
  div.review_new_page {
+  text-align: center;
+}
+
+div.watchlist_new_page {
   text-align: center;
 }
 

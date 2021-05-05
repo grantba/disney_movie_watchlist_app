@@ -11,20 +11,9 @@
 
 <%= form_for(@user, url: signup_path) do |f| %>
 
-    <%= f.label :name, "Name:" %>
-    <%= f.text_field :name %>
-
-    <%= f.label :username, "Username:" %>
-    <%= f.text_field :username %>
-
-    <%= f.label :email, "Email:" %>
-    <%= f.email_field :email %>
-
-    <%= f.label :password, "Password:" %>
-    <%= f.password_field :password %>
-
+    <%= render partial: 'users/form', locals: {user: f} %> 
+    
     <%= f.submit "Sign Up" %>
-
 <% end %>
 
 <br><br><h3 class="third_party_login_links"><%= link_to "If you would like to log in with Facebook, GitHub, or Google, please click here!", login_path %></h3>

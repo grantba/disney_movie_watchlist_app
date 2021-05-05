@@ -17,19 +17,9 @@
 <br><br>
 
 <%= form_with model: @review, url: review_path(@review), method: 'patch' do |f| %>
-    <%= f.label :rating, "★ Star" %>
-    <%= f.radio_button :rating, 1 %>&emsp;
-    <%= f.label :rating, "★★ Stars" %>
-    <%= f.radio_button :rating, 2 %>&emsp;
-    <%= f.label :rating, "★★★ Stars" %>
-    <%= f.radio_button :rating, 3 %>&emsp;
-    <%= f.label :rating, "★★★★ Stars" %>
-    <%= f.radio_button :rating, 4 %>&emsp;
-    <%= f.label :rating, "★★★★★ Stars" %>
-    <%= f.radio_button :rating, 5 %><br><br>
-    <%= f.label :description, "Description" %>
-    <%= f.text_field :description %><br>
-    <%= f.hidden_field :user_id, value: current_user.id %>
+
+    <%= render partial: 'form', locals: {movie_review: f} %>
+    
     <%= f.hidden_field :movie_id, value: @review.movie_id %>
     <%= f.submit "Update Review" %>
 <% end %>
