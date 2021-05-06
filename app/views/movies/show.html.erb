@@ -1,29 +1,16 @@
-<%= movie_title %><br>
-<%= movie_poster %>
-<%= movie_rated %>
-<%= movie_released %>
-<%= movie_runtime %>
-<%= movie_genre %>
-<%= movie_director %>
-<%= movie_writer %>
-<%= movie_actors %>
-<%= movie_plot %>
-<%= movie_awards %>
-<%= movie_ratings %>
-<%= movie_boxoffice %>
-<%= movie_production %>
-<%= movie_imdbID %>
+<%= render partial: 'movies/movie' %>
 <br><br>
 
 <br>
 <h1>Disney Watchlist App Movie Reviews</h1>
-<%= render(@reviews) || "There are no reviews for this movie yet." "<br><br><br>".html_safe %> 
 
-<br><h3>Create a New Review for This Movie</h3><br>
+<%= render(@reviews) || "There are no reviews for this movie yet." "<br><br>".html_safe %> 
+
+<br><br><h3>Create a New Review for This Movie</h3><br>
 
 <%= form_for :review, url: movie_reviews_path(@movie) do |f| %> 
 
-    <%= render partial: 'reviews/form', locals: {movie_review: f} %>
+    <%= render partial: 'reviews/form', locals: {f: f} %>
     
     <%= f.hidden_field :movie_id, value: @movie.id %>
     <%= f.submit "Submit Review" %>
@@ -41,19 +28,12 @@
     <%= form.submit "Add Movie to Watchlist" %>
 <% end %><br>
 <h3>Or Create a New Watchlist for this Movie</h3>
-<%= form_for :watchlist, url: watchlists_path do |form| %>
-    <%= form.text_field :category_type, placeholder: "Name your Watchlist" %><br>
-    <%= form.hidden_field :user_id, value: current_user.id %>
-    <%= form.hidden_field :movie_id, value: @movie.id %>
-    <%= form.submit "Add Movie to Watchlist" %>
-<% end %>
+
+<%= render partial: 'watchlists/movie_watchlist_form' %>
+
 <% else %>
 <h3>Create a Watchlist for this Movie</h3>
-<%= form_for :watchlist, url: watchlists_path do |form| %>
-    <%= form.text_field :category_type, placeholder: "Name your Watchlist" %><br>
-    <%= form.hidden_field :user_id, value: current_user.id %>
-    <%= form.hidden_field :movie_id, value: @movie.id %>
-    <%= form.submit "Add Movie to Watchlist" %>
-<% end %>
-<% end %>
 
+<%= render partial: 'watchlists/movie_watchlist_form' %>
+
+<% end %>

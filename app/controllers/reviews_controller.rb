@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-    before_action :find_reviews_user, only: [:index, :edit, :new]
+    before_action :find_user, only: [:index, :edit, :new]
     before_action :find_reviews_user_for_forms, only: [:update, :create]
     before_action :users_review, only: [:edit, :update, :destroy]
 
@@ -64,11 +64,6 @@ class ReviewsController < ApplicationController
 
     def users_review
         @review = Review.find_by(id: params[:id])
-    end
-
-    def find_reviews_user
-        @user = User.find_by(id: params["user_id"])
-        correct_user?(@user)
     end
 
     def find_reviews_user_for_forms

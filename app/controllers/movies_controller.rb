@@ -1,4 +1,5 @@
 class MoviesController < ApplicationController
+    before_action :redirect_if_not_logged_in, only: [:show, :search_by_name, :search_by_id]
 
     def show
         @movie = Movie.find_by(id: params[:id])
@@ -33,11 +34,10 @@ class MoviesController < ApplicationController
         @watchlist = Watchlist.find_by(id: params["watchlist_id"])
         if @movie && @watchlist && @user.movies.include?(@movie) && @user.watchlists.include?(@watchlist)
             if @watchlist.movies.delete(@movie)
-                flash[:notice] = "#{@movie.Title} has been removed from your #{@watchlist.category_type.capitalize} watchlist."
-                redirect_to user_watchlist_path(@user.id, @watchlist.id)
+                redirect_to user_watchlist_path(@user.id, @watchlist.id), notice: "#{@movie.Title} has been removed from your #{@watchlist.category_type.capitalize} watchlist."
             else
-                flash[:notice] = "There was a problem deleting this movie from your watchlist. Please try again."
-                redirect_to user_watchlist_path(@user.id, @watchlist.id)
+                redirect_to user_watchlist_path(@user.id, @watchlist.id), notice: "There was a problem deleting this movie from your watchlist. Please try again."
+
             end
         else
             redirect_to user_watchlist_path(@user.id, @watchlist.id), notice: "Access Denied. You may only access, add to, update, or delete your own account information." 

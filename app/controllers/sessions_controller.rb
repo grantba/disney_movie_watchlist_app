@@ -1,8 +1,5 @@
 class SessionsController < ApplicationController
 
-    def new
-    end
-
     def create
         # omniauth login
         if params['provider'].present?
@@ -26,10 +23,11 @@ class SessionsController < ApplicationController
     end
 
     def destroy
+        redirect_if_not_logged_in
         @user_name = helpers.users_name
         session.delete :user_id
-        flash[:notice] = "Thanks for joining us today, #{@user_name}. See you real soon!"
-        redirect_to root_path
+        redirect_to root_path, notice: "Thanks for joining us today, #{@user_name}. See you real soon!"
+
     end
 
     private

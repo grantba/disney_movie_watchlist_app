@@ -13,7 +13,7 @@
 
 <%= form_for(@user) do |f| %>
 
-  <%= render partial: 'users/form', locals: {user: f} %> 
+  <%= render partial: 'users/form', locals: {f: f} %> 
 
   <%= f.label :password, "Password:" %>
   <%= f.password_field :password, placeholder: "Type in a new password or your current password if you do not wish to change it at this time." %>

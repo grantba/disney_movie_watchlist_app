@@ -1,5 +1,5 @@
 class WatchlistsController < ApplicationController
-    before_action :find_watchlists_user, only: [:index, :show, :edit, :new]
+    before_action :find_user, only: [:index, :show, :edit, :new]
     before_action :find_watchlists_user_for_forms, only: [:update, :create]
     before_action :users_watchlist, only: [:show, :edit, :destroy]
 
@@ -83,11 +83,6 @@ class WatchlistsController < ApplicationController
 
     def users_watchlist
         @watchlist = Watchlist.find_by(id: params[:id])
-    end
-
-    def find_watchlists_user
-        @user = User.find_by(id: params["user_id"])
-        correct_user?(@user)
     end
 
     def find_watchlists_user_for_forms

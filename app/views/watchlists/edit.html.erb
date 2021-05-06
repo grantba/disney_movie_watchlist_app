@@ -11,9 +11,9 @@
 <% end %>
 
 <%= form_with model: @watchlist, url: watchlist_path(@watchlist), method: 'patch' do |f| %>
-    <%= f.label :category_type, "Category:" %> 
-    <%= f.text_field :category_type, placeholder: "Name your watchlist" %><br>
-    <%= f.hidden_field :user_id, value: current_user.id %>
+
+    <%= render partial: 'form', locals: {f: f} %>
+
     <%= f.hidden_field :watchlist_id, value: @watchlist.id %>
     <%= f.submit "Update Watchlist" %>
 <% end %>

@@ -9,6 +9,11 @@ class ApplicationController < ActionController::Base
         @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
     end
 
+    def find_user
+        @user = User.find_by(id: params["user_id"]) || User.find_by(id: params["id"]) 
+        correct_user?(@user)
+    end
+
     def correct_user?(user)
         if current_user != user
             handle_unverified_request

@@ -18,7 +18,7 @@
 
 <%= form_with model: @review, url: review_path(@review), method: 'patch' do |f| %>
 
-    <%= render partial: 'form', locals: {movie_review: f} %>
+    <%= render partial: 'form', locals: {f: f} %>
     
     <%= f.hidden_field :movie_id, value: @review.movie_id %>
     <%= f.submit "Update Review" %>

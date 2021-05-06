@@ -16,8 +16,8 @@
 <br>
 
 <%= form_with model: @watchlist, url: watchlists_path do |f| %>
-    <%= f.label :category_type, "Category:" %> 
-    <%= f.text_field :category_type, placeholder: "Name your watchlist" %><br>
-    <%= f.hidden_field :user_id, value: current_user.id %><br>
+
+    <%= render partial: 'form', locals: {f: f} %>
+
     <%= f.submit "Create Watchlist" %>
 <% end %>

@@ -1,4 +1,8 @@
-<h1 class='movie_index_and_show_page'>Search Movies</h1><br>
+<div class='movie_index_and_show_page'><h1>Search Movies</h1>
+<%= image_tag("disney_movie_reel.jfif", alt: "Film Reel of Disney Movies") %>
+</div><br>
+
+
 
 <%= form_with url: search_by_name_path do |f| %>
     <h2><%= f.label "Enter the name of the movie you'd like to search for:" %></h2>
@@ -10,4 +14,4 @@
     <h2><%= f.label "Or pick a movie from the list:" %></h2>
     <%= f.select "imdbID", options_for_select(title_and_date.map { |obj| [obj[:Title], obj[:imdbID]] }), prompt: "Select a Movie" %>
     <%= f.submit "Submit" %>
-    <% end %><br>
+    <% end %>

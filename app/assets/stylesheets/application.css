@@ -13,7 +13,11 @@
  *= require_tree .
  *= require_self
  */
- 
+
+.topnav {
+  cursor: url(popcorn_bucket.png), auto;
+}
+
  div#header_images {
     display: flex;
     justify-content: space-between;
@@ -53,6 +57,7 @@
   .topnav a:hover {
     background-color: #ddd!important;
     color: black;
+    cursor: url(popcorn_bucket.png), auto;
   }
 
   body {
@@ -97,7 +102,6 @@
     text-decoration: none;
     color: black;
   }
-
 
   input[type=text], select {
     width: 100%;
@@ -147,7 +151,7 @@
     margin: 8px 0;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
+    cursor: auto;
   }
   
   input[type=submit]:hover {
@@ -163,44 +167,42 @@
     margin: auto;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
+    cursor: auto;
   }
-
-  /* #delete_button:hover {
-    background-color: #e03620;
-  } */
 
   h1.movie_index_and_show_page {
-      text-align: center;
-  }
-
-  /* .movie_link {
-    text-decoration: none;
-    color: black;
-  }
-
-  .search_movie_link a {
-    text-decoration: none;
-    color: black;
-  } */
-
-  .search_movie_link {
     text-align: center;
   }
 
-  /* .alter_reviews_links {
-    text-decoration: none;
-    color: black;
-  } */
+  div.movie_index_and_show_page h1 {
+    text-align: center;
+  }
 
-  span#movie_poster {
-    /* border: 10px solid rgb(31, 30, 30); */
+  .movie_index_and_show_page img {
     display: table;
     margin-left: auto;
     margin-right: auto;
     flex: auto;
+    border: thick;
+    border: black;
+    border: solid;
+}
+
+  .search_movie_link {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
+  div#movie_poster {
+    /* border: thick;
+    border: black;
+    border: solid;    */
+    display: table; 
+    margin-left: auto;
+    margin-right: auto;
+  }
+ 
   div.watchlist_show_page {
       text-align: center;
   }
@@ -249,14 +251,3 @@ div.review_edit_page {
   color: black;
  }
 
- /* Star ratings */
- /* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- .checked {
-    color: gold;
-  }
-  <h2>Star Rating</h2>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span> */

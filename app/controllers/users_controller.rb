@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        user_by_name = @user.name.capitalize
+        user_by_name = helpers.users_name
         Review.where(user_id: @user.id).delete_all
         @watchlists = helpers.watchlists_by_user.each { |wl| wl.movies.clear }
         @watchlists.each { |wl| wl.destroy }
@@ -38,9 +38,4 @@ class UsersController < ApplicationController
         params.require(:user).permit(:name, :username, :email, :password, :provider, :uid, :image)
     end
 
-    def find_user
-        @user = User.find_by(id: params["id"]) 
-        correct_user?(@user)
-    end
-    
 end

@@ -1,0 +1,6 @@
+<%= form_for :watchlist, url: watchlists_path do |form| %>
+    <%= form.text_field :category_type, placeholder: "Name your Watchlist" %><br>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+    <%= form.hidden_field :movie_id, value: @movie.id %>
+    <%= form.submit "Add Movie to Watchlist" %>
+<% end %>
