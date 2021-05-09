@@ -251,3 +251,21 @@ div.review_edit_page {
   color: black;
  }
 
+ h1#show_page {
+   text-align: center;
+ }
+
+ div#movie_suggestions {
+  display: flex;
+  justify-content: space-between;
+  justify-content: space-around;
+ }
+
+ #movie_suggestions a:hover{
+  cursor: url(popcorn_bucket.png), auto;
+ }
+
+ #movie_suggestions h2 {
+   text-align: center;
+ }
+

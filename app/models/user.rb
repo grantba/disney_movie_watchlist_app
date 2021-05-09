@@ -1,6 +1,6 @@
 class User < ApplicationRecord
     has_secure_password
-    has_many :watchlists
+    has_many :watchlists, -> { order(:category_type) }
     has_many :reviews
     has_many :movies, through: :watchlists
     
