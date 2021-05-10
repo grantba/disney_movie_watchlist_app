@@ -15,15 +15,33 @@
 </div>
 <br>
 
-<%= form_with model: @review, url: reviews_path, method: 'post' do |f| %>
+<% if current_user.movies.any? %>
 
+<%= form_with model: @review, method: 'post' do |f| %>
+  
   <h3><%= f.label "Pick from your current list of movies:" %></h3>
   <%= f.collection_select :id, movies_by_user, :id, :Title, prompt: "Select a Movie" %>
 
-  <h3><%= f.label "Or choose from the full list of movies:" %></h3>
+  <h3><%= f.label "Or choose from a list of movies:" %></h3>
   <%= f.select "movie_id", options_for_select(movies_for_review.map { |obj| [obj[:Title], obj[:id]] }), prompt: "Select a Movie" %>
   
   <br><br><%= render partial: 'form', locals: {f: f} %>
   
   <%= f.submit "Submit Review" %>
 <% end %>
+
+<% else %>
+
+<%= form_with model: @review, method: 'post' do |f| %>
+
+  <h3><%= f.label "Choose from a list of movies:" %></h3>
+  <%= f.select "movie_id", options_for_select(movies_for_review.map { |obj| [obj[:Title], obj[:id]] }), prompt: "Select a Movie" %>
+  
+  <br><br><%= render partial: 'form', locals: {f: f} %>
+  
+  <%= f.submit "Submit Review" %>
+
+<% end %>
+<% end %>
+
+

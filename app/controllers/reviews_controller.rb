@@ -13,15 +13,29 @@ class ReviewsController < ApplicationController
     # params review/user_id from all routes
     # nested with movie show 
     def create
-        @movie = Movie.find_by(id: params["review"]["id"]) || Movie.find_by(id: params["review"]["movie_id"])
-        if @movie && @movie.reviews.create(review_params)
-            redirect_to movie_path(@movie), notice: "Your review has been added to the movie #{@movie.Title}."
+        if !params["review"]["id"].blank? && !params["review"]["movie_id"].blank? 
+            redirect_to new_user_review_path(current_user), notice: "There was an error creating your new review. All fields must be filled out completely and you can only review one movie at a time. Please try again."
+        elsif params["review"]["id"].blank? && params["review"]["movie_id"].blank? 
+            redirect_to new_user_review_path(current_user), notice: "There was an error creating your new review. All fields must be filled out completely. Please try again."
         else
-            if @user.movies.include?(@movie)
-                flash.now[:notice] = "There was an error creating your new review. All fields must be filled out completely. Please try again."
-                render :new
+            @movie = Movie.find_by(id: params["review"]["id"]) || Movie.find_by(id: params["review"]["movie_id"])
+            params['review']['movie_id'] = @movie.id
+            params['review']['id'] = nil
+            @review = Review.new(review_params)
+            if @movie && @review.save
+                redirect_to movie_path(@movie), notice: "Your review has been added to the movie #{@movie.Title}."
             else
-                redirect_to new_user_review_path(current_user), notice: "There was an error creating your new review. All fields must be filled out completely. Please try again."
+                if @user.movies.include?(@movie)
+                    flash.now[:notice] = "There was an error creating your new review. All fields must be filled out completely. Please try again."
+                    render :new
+                else
+                    if @movie
+                        redirect_to movie_path(@movie), notice: "There was an error creating your new review. All fields must be filled out completely. Please try again."
+                    else
+                        flash.now[:notice] = "There was an error creating your new review. All fields must be filled out completely. Please try again."
+                        render :new
+                    end
+                end
             end
         end
     end

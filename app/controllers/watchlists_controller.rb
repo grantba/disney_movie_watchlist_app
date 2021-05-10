@@ -21,20 +21,25 @@ class WatchlistsController < ApplicationController
 
     # params watchlist/user_id from all routes
     def create
-        @watchlist = Watchlist.new(watchlist_params.except("movie_id"))
-        if params["watchlist"]["movie_id"]
+        if !params['watchlist']['movie_id'].blank? && params['watchlist']['category_type'].blank?
             @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
-            if @movie && @watchlist.save
-                @watchlist.movies << @movie
-                redirect_to user_watchlist_path(current_user.id, @watchlist.id)
-            else
-                redirect_to user_watchlists_path(current_user), notice: "There was an error creating your new watchlist. Please try again."
-            end
-        else 
-            if @watchlist.save
-                redirect_to user_watchlist_path(current_user.id, @watchlist.id)
-            else
-                render :new
+            redirect_to movie_path(@movie), notice: "There was an error creating your new watchlist. Make sure the name for your watchlist is not blank. Please try again."
+        else
+            @watchlist = Watchlist.new(watchlist_params.except("movie_id"))
+            if params["watchlist"]["movie_id"]
+                @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+                if @movie && @watchlist.save
+                    @watchlist.movies << @movie
+                    redirect_to user_watchlist_path(current_user.id, @watchlist.id)
+                else
+                    redirect_to user_watchlists_path(current_user), notice: "There was an error creating your new watchlist. Please try again."
+                end
+            else 
+                if @watchlist.save
+                    redirect_to user_watchlist_path(current_user.id, @watchlist.id)
+                else
+                    render :new
+                end
             end
         end
     end
@@ -43,23 +48,28 @@ class WatchlistsController < ApplicationController
 
     # params watchlist/user_id from all routes
     def update
-        @watchlist = Watchlist.find_by(id: params["watchlist"]["watchlist_id"])
-        if @watchlist && @watchlist.user_id == current_user.id
-            if params["watchlist"]["movie_id"]
-                @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
-                @watchlist.movies << @movie if @movie
-                if @watchlist.save
+        if !params['watchlist']['movie_id'].blank? && params['watchlist']['watchlist_id'].blank?
+            @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+            redirect_to movie_path(@movie), notice: "There was an error adding this movie to your watchlist. Make sure you have selected a watchlist from the list. Please try again."
+        else
+            @watchlist = Watchlist.find_by(id: params["watchlist"]["watchlist_id"])
+            if @watchlist && @watchlist.user_id == current_user.id
+                if params["watchlist"]["movie_id"]
+                    @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+                    @watchlist.movies << @movie if @movie
+                    if @watchlist.save
+                        redirect_to user_watchlist_path(current_user.id, @watchlist)
+                    else
+                        redirect_to movies_path, notice: "There was an error adding this movie to your watchlist. Please try again."
+                    end
+                elsif @watchlist.update(watchlist_params)
                     redirect_to user_watchlist_path(current_user.id, @watchlist)
                 else
-                    redirect_to movies_path, notice: "There was an error adding this movie to your watchlist. Please try again."
+                    render :edit
                 end
-            elsif @watchlist.update(watchlist_params)
-                redirect_to user_watchlist_path(current_user.id, @watchlist)
             else
-                render :edit
-            end
-        else
-            redirect_to "/", notice: "Access Denied. You may only access, add to, or update your own account information."      
+                redirect_to "/", notice: "Access Denied. You may only access, add to, or update your own account information."     
+            end 
         end
     end
 
