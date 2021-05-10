@@ -1,5 +1,9 @@
 class SessionsController < ApplicationController
 
+    def new
+        redirect_if_logged_in
+    end
+
     def create
         # omniauth login
         if params['provider'].present?
@@ -12,8 +16,8 @@ class SessionsController < ApplicationController
             end
         else
             # regular app login
-            if @user = User.find_by(username: params[:user][:username])&.authenticate(params[:user][:password])
-                session[:user_id] = @user.id
+            if user = User.find_by(username: params[:user][:username])&.authenticate(params[:user][:password])
+                session[:user_id] = user.id
                 redirect_to root_path
             else
                 flash.now[:notice] = "We could not verify your credentials. Try logging in again. If you do not have an account already, please sign up instead."
@@ -23,11 +27,9 @@ class SessionsController < ApplicationController
     end
 
     def destroy
-        redirect_if_not_logged_in
         @user_name = helpers.users_name
         session.delete :user_id
         redirect_to root_path, notice: "Thanks for joining us today, #{@user_name}. See you real soon!"
-
     end
 
     private

@@ -20,8 +20,12 @@ class ApplicationController < ActionController::Base
         end
     end
 
+    def redirect_if_logged_in
+        redirect_to '/' if logged_in?
+    end
+
     def redirect_if_not_logged_in
-        redirect_to '/', flash[:notice] = "You must be logged in to access this page." if current_user.nil?
+        redirect_to '/', notice: "You must be logged in to access this page." if current_user.nil?
     end
 
     def handle_unverified_request

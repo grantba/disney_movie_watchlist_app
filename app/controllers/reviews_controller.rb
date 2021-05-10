@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+    before_action :redirect_if_not_logged_in, except: [:create, :update, :destroy]
     before_action :find_user, only: [:index, :edit, :new]
     before_action :find_reviews_user_for_forms, only: [:update, :create]
     before_action :users_review, only: [:edit, :update, :destroy]

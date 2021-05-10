@@ -4,7 +4,7 @@ class User < ApplicationRecord
     has_many :reviews
     has_many :movies, through: :watchlists
     
-    validates :name, :username, :email, presence: true
+    validates :name, :email, :username, presence: true
     validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: "must be a valid email address, for example, user@email.com." }
 
     def self.from_omniauth(response)

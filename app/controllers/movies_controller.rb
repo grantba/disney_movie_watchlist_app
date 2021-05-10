@@ -1,8 +1,9 @@
 class MoviesController < ApplicationController
     before_action :redirect_if_not_logged_in, only: [:show, :search_by_name, :search_by_id]
+    before_action :find_user, only: [:destroy]
+    before_action :find_movie, only: [:show, :destroy]
 
     def show
-        @movie = Movie.find_by(id: params[:id])
         @reviews = @movie.reviews
     end
 
@@ -28,9 +29,6 @@ class MoviesController < ApplicationController
 
     #will have this option on the watchlist show page
     def destroy
-        @user = User.find_by(id: current_user.id)
-        correct_user?(@user)
-        @movie = Movie.find_by(id: params["id"])
         @watchlist = Watchlist.find_by(id: params["watchlist_id"])
         if @movie && @watchlist && @user.movies.include?(@movie) && @user.watchlists.include?(@watchlist)
             if @watchlist.movies.delete(@movie)
@@ -48,6 +46,10 @@ class MoviesController < ApplicationController
 
     def movie_params
         params.require(:movie).permit(:search)
+    end
+
+    def find_movie
+        @movie = Movie.find_by(id: params[:id])
     end
     
 end
