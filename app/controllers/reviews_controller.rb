@@ -86,6 +86,7 @@ class ReviewsController < ApplicationController
 
     def users_review
         @review = Review.find_by(id: params[:id])
+        redirect_to '/', notice: "That review could not be found. Please try again." if @review.nil?
     end
 
     def find_reviews_user_for_forms

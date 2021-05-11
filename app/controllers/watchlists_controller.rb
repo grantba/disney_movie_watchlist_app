@@ -100,6 +100,7 @@ class WatchlistsController < ApplicationController
 
     def users_watchlist
         @watchlist = Watchlist.find_by(id: params[:id])
+        redirect_to '/', notice: "That watchlist could not be found. Please try again." if @watchlist.nil?
     end
 
     def find_watchlists_user_for_forms

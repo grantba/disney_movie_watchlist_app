@@ -4,7 +4,7 @@ class MoviesController < ApplicationController
     before_action :find_movie, only: [:show, :destroy]
 
     def show
-        @reviews = @movie.reviews
+        @reviews = @movie.reviews if @movie
     end
 
     def search_by_name
@@ -49,6 +49,7 @@ class MoviesController < ApplicationController
 
     def find_movie
         @movie = Movie.find_by(id: params[:id])
+        redirect_to '/', notice: "That movie could not be found. Please try again." if @movie.nil?
     end
     
 end
