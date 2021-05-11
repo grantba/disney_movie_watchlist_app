@@ -27,10 +27,8 @@ class UsersController < ApplicationController
 
     def destroy
         user_by_name = helpers.users_name
-        @reviews = Review.where(user_id: @user.id)
-        @reviews.each { |r| r.destroy }
-        @watchlists = helpers.watchlists_by_user.each { |wl| wl.movies.clear }
-        @watchlists.each { |wl| wl.destroy }
+        helpers.remove_reviews_from_user
+        helpers.remove_watchlists_from_user
         @user.destroy
         redirect_to root_path, notice: "We're sad to see you go, #{user_by_name}, but thanks for visiting!"
     end
