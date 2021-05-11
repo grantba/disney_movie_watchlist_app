@@ -49,20 +49,26 @@ class WatchlistsController < ApplicationController
 
     # params watchlist/user_id from all routes
     def update
+        # if adding movie to an existing watchlist from the movie show page and didn't select a watchlist for the movie 
         if !params['watchlist']['movie_id'].blank? && params['watchlist']['watchlist_id'].blank?
             @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
             redirect_to movie_path(@movie), notice: "There was an error adding this movie to your watchlist. Make sure you have selected a watchlist from the list. Please try again."
         else
             @watchlist = Watchlist.find_by(id: params["watchlist"]["watchlist_id"])
             if @watchlist && @watchlist.user_id == current_user.id
+                # if adding a movie to an existing watchlist
                 if params["watchlist"]["movie_id"]
                     @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
                     @watchlist.movies << @movie if @movie
                     if @watchlist.save
                         redirect_to user_watchlist_path(current_user.id, @watchlist)
+                    elsif
+                        @movie
+                        redirect_to movie_path(@movie), notice: "There was an error adding this movie to your watchlist. Please try again."
                     else
                         redirect_to movies_path, notice: "There was an error adding this movie to your watchlist. Please try again."
                     end
+                # if updating watchlist information from watchlist show page    
                 elsif @watchlist.update(watchlist_params)
                     redirect_to user_watchlist_path(current_user.id, @watchlist)
                 else
