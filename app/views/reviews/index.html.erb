@@ -5,8 +5,8 @@
 <br><br>
 
 <div id="reviews_index_links">
-<% if reviews_by_user.present? %>
-<% @reviews.each do |review| %>
+<% if current_user.reviews.any? %>
+<% reviews_by_user.each do |review| %>
     <h2><%= link_to review.movie.Title, movie_path(review.movie.id) %></h2>
     <ul>
     <li><%= pluralize(review.rating, "Star") %> - <%= review.description %></li><br>

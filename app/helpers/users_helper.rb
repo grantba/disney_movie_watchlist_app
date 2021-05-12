@@ -1,7 +1,7 @@
 module UsersHelper
 
     def users_name
-        current_user.name.split.map { |name| name.capitalize }.join(" ")
+        current_user.name.titleize
     end
 
 end

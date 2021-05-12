@@ -1,7 +1,7 @@
 module ReviewsHelper
 
     def reviews_by_user
-        @reviews = Review.all.where(user_id: current_user.id)
+        reviews = Review.all.where(user_id: current_user.id)
     end
 
     def remove_reviews_from_user

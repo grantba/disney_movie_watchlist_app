@@ -13,7 +13,9 @@ module MoviesHelper
     end
 
     def movies_by_user
-        movies = current_user.movies
+        movies = current_user.movies.map do |movie|
+            {Title: "#{movie.Title} #{movie.Year}", id: movie.id}
+        end
     end
 
 end
