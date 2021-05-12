@@ -6,7 +6,7 @@ module MoviesHelper
         end
     end
 
-    def movies_for_review
+    def movies_for_review_and_watchlist
         movies = Movie.all.map do |movie|
             {Title: "#{movie.Title} #{movie.Year}", id: movie.id}
         end

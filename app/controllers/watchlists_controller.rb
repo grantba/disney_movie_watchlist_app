@@ -56,7 +56,7 @@ class WatchlistsController < ApplicationController
         else
             @watchlist = Watchlist.find_by(id: params["watchlist"]["watchlist_id"])
             if @watchlist && @watchlist.user_id == current_user.id
-                # if adding a movie to an existing watchlist
+                # if adding a movie to an existing watchlist whether from movie show page or watchlist show page
                 if params["watchlist"]["movie_id"]
                     @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
                     @watchlist.movies << @movie if @movie
@@ -68,7 +68,7 @@ class WatchlistsController < ApplicationController
                     else
                         redirect_to movies_path, notice: "There was an error adding this movie to your watchlist. Please try again."
                     end
-                # if updating watchlist information from watchlist show page    
+                # if updating watchlist information from watchlist show page without adding a movie  
                 elsif @watchlist.update(watchlist_params)
                     redirect_to user_watchlist_path(current_user.id, @watchlist)
                 else

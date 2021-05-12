@@ -6,16 +6,41 @@
 <br>
 <% if @watchlist.movies.none? %>
         <h3>You have no movies in this category yet.</h3>
+
+        <br><h3 class="search_movie_link">Search for a Movie to Add to This Watchlist</h3>
+
+        <%= form_with model: @watchlist, url: watchlist_path(@watchlist), method: 'patch' do |f| %>
+
+                <%= f.label "Choose from a list of movies:" %>
+                <%= f.select "movie_id", options_for_select(movies_for_review_and_watchlist.map { |obj| [obj[:Title], obj[:id]] }), prompt: "Select a Movie" %>
+                <%= f.hidden_field :watchlist_id, value: @watchlist.id %>
+                <%= f.hidden_field :user_id, value: current_user.id %>
+
+                <%= f.submit "Add Movie to Watchlist" %>
+        <% end %><br>
+
 <% else %>
-<h2>Movies in this Watchlist:</h2><br>
-<% @watchlist.movies.each do |movie| %>
-        <h3 class="movie_link"><%= link_to movie.Title, movie_path(movie) %></h3>
 
-        <p><%= button_to "Delete this Movie from Watchlist", movie_path(movie), method: 'delete', params: { watchlist_id: @watchlist.id }, data: {confirm: "Are you sure you want to delete #{movie.Title} from this watchlist?" } %></p>
+        <h2>Movies in this Watchlist:</h2><br>
+        <% @watchlist.movies.each do |movie| %>
+                <h3 class="movie_link"><%= link_to movie.Title, movie_path(movie) %></h3>
+
+                <p><%= button_to "Delete this Movie from Watchlist", movie_path(movie), method: 'delete', params: { watchlist_id: @watchlist.id }, data: {confirm: "Are you sure you want to delete #{movie.Title} from this watchlist?" } %></p>
         
-<% end %>
-<% end %>
+        <% end %>
 
-<br><h3 class="search_movie_link"><%= link_to "Search for a Movie", movies_path %></h3><br>
+        <br><h3 class="search_movie_link">Search for another Movie to Add to This Watchlist</h3>
+
+        <%= form_with model: @watchlist, url: watchlist_path(@watchlist), method: 'patch' do |f| %>
+
+                <%= f.label "Choose from a list of movies:" %>
+                <%= f.select "movie_id", options_for_select(movies_for_review_and_watchlist.map { |obj| [obj[:Title], obj[:id]] }), prompt: "Select a Movie" %>
+                <%= f.hidden_field :watchlist_id, value: @watchlist.id %>
+                <%= f.hidden_field :user_id, value: current_user.id %>
+
+                <%= f.submit "Add Movie to Watchlist" %>
+        <% end %><br>
+
+<% end %>
 
 <div id="delete_button"><%= button_to "Delete Watchlist", watchlist_path(@watchlist), method: 'delete', data: {confirm: "Are you sure you want to delete your watchlist, #{@watchlist.category_type}? If you have any movies in this watchlist and don't move them into another watchlist, you will lose them too!" } %></div>
