@@ -8,7 +8,7 @@
 <% if current_user.watchlists.any? %>
 <% watchlists_by_user.each do |wl| %>
     <h2><%= link_to wl.category_type, user_watchlist_path(current_user.id, wl.id) %></h2>
-    <ul><li>This Watchlist currently has <%= pluralize(wl.movies.count, "Movie") %></li></ul>
+    <ul><li>This watchlist currently has <%= pluralize(wl.movies.count, "movie") %></li></ul>
 <% end %>
 <% else %>
     <h2>You have not created any watchlists yet.</h2>

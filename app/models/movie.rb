@@ -12,10 +12,12 @@ class Movie < ApplicationRecord
         update_imdbID
     end
 
-    def self.update_imdbID
+    def self.update_imdbRating_imdbID_Box_Office_Gross
         self.all.each do |movie|
+            rating = movie.imdbRating.gsub("$", "").gsub(",", "")
             id = movie.imdbID.gsub("/title/", "").gsub("/?ref_=ttls_li_i", "")
-            movie.update(imdbID: id)
+            box_office = movie.BoxOffice.gsub(".", "")
+            movie.update(imdbID: id, imdbRating: rating, BoxOffice: box_office)
         end
     end
 

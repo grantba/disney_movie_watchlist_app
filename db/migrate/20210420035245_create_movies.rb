@@ -14,6 +14,7 @@ class CreateMovies < ActiveRecord::Migration[6.1]
       t.text :Awards
       t.string :Poster
       t.string :Ratings
+      t.string :imdbRating
       t.string :imdbID
       t.string :BoxOffice
       t.string :Production
