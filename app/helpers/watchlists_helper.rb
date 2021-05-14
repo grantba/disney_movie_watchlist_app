@@ -11,4 +11,8 @@ module WatchlistsHelper
         watchlists.each { |wl| wl.destroy }
     end
 
+    def watchlist_movies(watchlist)
+        watchlist.movies.order(:Title)
+    end
+
 end

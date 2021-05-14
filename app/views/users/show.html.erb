@@ -1,23 +1,28 @@
 <% if logged_in? %>
 
-<h1>Welcome, <%= users_name %>!</h1><br><br><br>
+<h1>Welcome, <%= users_name %>!</h1><br><br>
 
 <h1 id="show_page">Movie Suggestions</h1><br><br>
 <div id="movie_suggestions">
 <span>
-<h2>Highly Rated</h2>
-<% @movie_highest_rating = Movie.highest_rating %>
-<%= link_to image_tag(@movie_highest_rating.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image'), movie_path(@movie_highest_rating.id) %>
+<h2>High Box Office Gross</h2>
+<% @movie_highest_box_office_gross = Movie.highest_box_office_gross %>
+<%= link_to image_tag(@movie_highest_box_office_gross.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image'), movie_path(@movie_highest_box_office_gross.id) %>
+</span>
+<span>
+<h2>Highly Rated on App</h2>
+<% @movie_highest_app_rating = Movie.highest_app_rating %>
+<%= link_to image_tag(@movie_highest_app_rating.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image'), movie_path(@movie_highest_app_rating.id) %>
+</span>
+<span>
+<h2>Highly Rated on IMDb</h2>
+<% @movie_highest_imdb_rating = Movie.highest_imdb_rating %>
+<%= link_to image_tag(@movie_highest_imdb_rating.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image'), movie_path(@movie_highest_imdb_rating.id) %>
 </span>
 <span>
 <h2>Random Pick</h2>
 <% @movie_random_pick = Movie.random_pick %>
 <%= link_to image_tag(@movie_random_pick.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image'), movie_path(@movie_random_pick.id) %>
-</span>
-<span>
-<h2>High Box Office Gross</h2>
-<% @movie_highest_box_office_gross = Movie.highest_box_office_gross %>
-<%= link_to image_tag(@movie_highest_box_office_gross.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image'), movie_path(@movie_highest_box_office_gross.id) %>
 </span>
 </div>
 

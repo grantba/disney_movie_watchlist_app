@@ -22,7 +22,7 @@
 <% else %>
 
         <h2>Movies in this Watchlist:</h2><br>
-        <% @watchlist.movies.each do |movie| %>
+        <% watchlist_movies(@watchlist).each do |movie| %>
                 <h3 class="movie_link"><%= link_to movie.Title, movie_path(movie) %></h3>
 
                 <p><%= button_to "Delete this Movie from Watchlist", movie_path(movie), method: 'delete', params: { watchlist_id: @watchlist.id }, data: {confirm: "Are you sure you want to delete #{movie.Title} from this watchlist?" } %></p>

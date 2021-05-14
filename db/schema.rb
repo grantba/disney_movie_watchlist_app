@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2021_04_20_041138) do
     t.text "Awards"
     t.string "Poster"
     t.string "Ratings"
+    t.string "imdbRating"
     t.string "imdbID"
     t.string "BoxOffice"
     t.string "Production"

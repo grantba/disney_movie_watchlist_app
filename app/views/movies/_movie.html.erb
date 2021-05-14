@@ -2,7 +2,7 @@
     <h1 class='movie_index_and_show_page'><%= @movie.Title %></h1>
 <% end %>
 <% if !@movie.Poster.blank? && @movie.Poster != "N/A" %>
-    <div id='movie_poster'><%= image_tag(@movie.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image') %></div
+    <div id='movie_poster'><%= image_tag(@movie.Poster.gsub('m.media-', ""), alt: 'Movie Poster Image') %></div>
 <% end %>
 <% if !@movie.Rated.blank? && @movie.Rated != "N/A" %>
     <p>Rated: <%= @movie.Rated %></p>
@@ -31,11 +31,11 @@
 <% if !@movie.Awards.blank? && @movie.Awards != "N/A" %>
     <p>Awards: <%= @movie.Awards %></p>
 <% end %>
-<% if !@movie.Ratings.blank? && @movie.Ratings != "N/A" %>
-    <p>Ratings: <%= @movie.Ratings.gsub("}", "").gsub("[", "").gsub("]", "").gsub("\{\"Source\"=>\"", "").gsub("\"\, \"Value\"=>\"", " - ").gsub("\"", "") %>
+<% if !@movie.Ratings.blank? && @movie.Ratings != "N/A" && @movie.Ratings != "[]" %>
+    <p>Ratings: <%= @movie.Ratings.gsub("}", "").gsub("[", "").gsub("]", "").gsub("\{\"Source\"=>\"", "").gsub("\"\, \"Value\"=>\"", " - ").gsub("\"", "") %></p>
 <% end %>
-<% if !@movie.BoxOffice.blank? && @movie.BoxOffice != "N/A" %>
-    <p>Box Office Revenue: <%= @movie.BoxOffice %></p>
+<% if !@movie.BoxOffice.blank? && @movie.BoxOffice != "N/A" && @movie.BoxOffice != "0" %>
+    <p>Box Office Revenue: $<%= @movie.BoxOffice.to_s.reverse.scan(/\d{1,3}/).join(",").reverse %></p>
 <% end %>
 <% if !@movie.Production.blank? && @movie.Production != "N/A" %>
     <p>Production Company: <%= @movie.Production %></p>

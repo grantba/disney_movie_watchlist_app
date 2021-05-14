@@ -3,7 +3,7 @@ class Movie < ApplicationRecord
     has_and_belongs_to_many :watchlists, through: :movie_watchlists
     has_many :users, through: :watchlists
     has_many :reviews
-    default_scope { order(:Title)}
+    # default_scope { order(:Title)}
 
     def self.make_a_movie(movies_array)
         movies_array.each do |movie|
@@ -12,12 +12,10 @@ class Movie < ApplicationRecord
         update_imdbID
     end
 
-    def self.update_imdbRating_imdbID_Box_Office_Gross
+    def self.update_imdbID
         self.all.each do |movie|
-            rating = movie.imdbRating.gsub("$", "").gsub(",", "")
             id = movie.imdbID.gsub("/title/", "").gsub("/?ref_=ttls_li_i", "")
-            box_office = movie.BoxOffice.gsub(".", "")
-            movie.update(imdbID: id, imdbRating: rating, BoxOffice: box_office)
+            movie.update(imdbID: id)
         end
     end
 
@@ -25,17 +23,24 @@ class Movie < ApplicationRecord
         if movie["Response"] == "False"
             "That movie could not be found. Please try again."
         else
-            new_movie = Movie.new(Title: movie["Title"], Year: movie["Year"], Rated: movie["Rated"], Released: movie["Released"], Runtime: movie["Runtime"], Genre: movie["Genre"], Director: movie["Director"], Writer: movie["Writer"], Actors: movie["Actors"], Plot: movie["Plot"], Awards: movie["Awards"], Poster: movie["Poster"], Ratings: movie["Ratings"], imdbID: movie["imdbID"], BoxOffice: movie["BoxOffice"], Production: movie["Production"], Response: movie["Response"])
-            if m = Movie.find_by(Title: new_movie.Title, imdbID: new_movie.imdbID)
-                if m.update(Rated: movie["Rated"], Released: movie["Released"], Runtime: movie["Runtime"], Genre: movie["Genre"], Director: movie["Director"], Writer: movie["Writer"], Actors: movie["Actors"], Plot: movie["Plot"], Awards: movie["Awards"], Poster: movie["Poster"], Ratings: movie["Ratings"], BoxOffice: movie["BoxOffice"], Production: movie["Production"], Response: movie["Response"])
-                    m
+            new_movie = Movie.new(Title: movie["Title"], Year: movie["Year"], Rated: movie["Rated"], Released: movie["Released"], Runtime: movie["Runtime"], Genre: movie["Genre"], Director: movie["Director"], Writer: movie["Writer"], Actors: movie["Actors"], Plot: movie["Plot"], Awards: movie["Awards"], Poster: movie["Poster"], Ratings: movie["Ratings"], imdbRating: movie["imdbRating"], imdbID: movie["imdbID"], BoxOffice: movie["BoxOffice"], Production: movie["Production"], Response: movie["Response"])
+            # if one of the movies from scraping the imdb's website for Disney movies and in the db
+            if movie = Movie.find_by(Title: new_movie.Title, imdbID: new_movie.imdbID)
+                if movie.update(Rated: new_movie["Rated"], Released: new_movie["Released"], Runtime: new_movie["Runtime"], Genre: new_movie["Genre"], Director: new_movie["Director"], Writer: new_movie["Writer"], Actors: new_movie["Actors"], Plot: new_movie["Plot"], Awards: new_movie["Awards"], Poster: new_movie["Poster"], Ratings: new_movie["Ratings"], imdbRating: new_movie["imdbRating"], BoxOffice: new_movie["BoxOffice"], Production: new_movie["Production"], Response: new_movie["Response"])
+                    rating = movie.imdbRating.gsub(".", "").to_i
+                    box_office = movie.BoxOffice.gsub("$", "").gsub(",", "").to_i
+                    movie.update(imdbRating: rating, BoxOffice: box_office)                    
+                    movie
                 else
                     "There was an issue loading this movie. Please try again."
                 end
             else
+                # if one of the movies from name search and not already in the db
                 if new_movie.save
-                    m = "(" + new_movie.Year + ")"
-                    new_movie.update(Year: m)
+                    movie_year = "(" + new_movie.Year + ")" 
+                    rating = new_movie.imdbRating.gsub(".", "").to_i
+                    box_office = new_movie.BoxOffice.gsub("$", "").gsub(",", "").to_i
+                    new_movie.update(Year: movie_year, imdbRating: rating, BoxOffice: box_office) 
                     new_movie
                 else
                     "There was an issue loading this movie. Please try again."
@@ -44,9 +49,14 @@ class Movie < ApplicationRecord
         end
     end 
 
-    def self.highest_rating
+    def self.highest_app_rating
         movies = self.joins(:reviews).where('rating == 5').distinct
-        movies = movies.map {|m| m unless m.Poster == nil || m.Poster == "N/A"}
+        movies = movies.map {|m| m unless m.Poster.nil? || m.Poster == "N/A"}
+        @movie = movies.sample
+    end
+
+    def self.highest_imdb_rating
+        movies = self.where.not(imdbRating: nil).where.not(imdbRating: "N/A").order(imdbRating: :desc).limit(25)
         @movie = movies.sample
     end
 
@@ -56,9 +66,10 @@ class Movie < ApplicationRecord
     end
 
     def self.highest_box_office_gross
-        movies = self.order("length(BoxOffice) desc").where.not(BoxOffice: nil).where.not(BoxOffice: "N/A").limit(10)     
-        movies = movies.map {|m| m unless m.Poster == nil || m.Poster == "N/A"}
-        @movie = movies.sample
+        movies = self.all.where.not(BoxOffice: nil).where.not(BoxOffice: "N/A").where.not(BoxOffice: 0).order("length(BoxOffice) desc")
+        movies = movies.sort_by { |s| s.BoxOffice.scan(/\d+/).first.to_i }
+        movies = movies.reverse
+        @movie = movies[0..25].sample
     end
 
 end

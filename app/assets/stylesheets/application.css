@@ -183,9 +183,7 @@
     margin-left: auto;
     margin-right: auto;
     flex: auto;
-    border: thick;
-    border: black;
-    border: solid;
+    border: 5px solid black;
 }
 
   .search_movie_link {
@@ -201,6 +199,11 @@
     display: table; 
     margin-left: auto;
     margin-right: auto;
+  }
+
+  #movie_poster img {
+    border: 10px solid black;
+    padding: 10px;
   }
  
   div.watchlist_show_page {
@@ -259,7 +262,18 @@ div.review_edit_page {
   display: flex;
   justify-content: space-between;
   justify-content: space-around;
- }
+}
+
+#movie_suggestions img {
+  display: flex;
+  justify-content: space-between;
+  justify-content: space-around;
+  height: 500px;
+  width: 300px;
+  border: 10px solid black;
+  padding: 10px;
+  margin: 10px;
+}
 
  #movie_suggestions a:hover{
   cursor: url(popcorn_bucket.png), auto;
