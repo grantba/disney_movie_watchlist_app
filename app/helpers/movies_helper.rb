@@ -1,5 +1,9 @@
 module MoviesHelper
 
+    def movie_by_name
+        @review.movie.Title
+    end
+
     def title_and_date
         movies = Movie.order(:Title).map do |movie|
             {Title: "#{movie.Title} #{movie.Year}", imdbID: movie.imdbID}

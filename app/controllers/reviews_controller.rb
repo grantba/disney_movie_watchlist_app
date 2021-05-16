@@ -21,7 +21,7 @@ class ReviewsController < ApplicationController
         elsif params["review"]["id"].blank? && params["review"]["movie_id"].blank? 
             redirect_to new_user_review_path(current_user), notice: "There was an error creating your new review. All fields must be filled out completely. Please try again."
         else
-            @movie = Movie.find_by(id: params["review"]["id"]) || Movie.find_by(id: params["review"]["movie_id"])
+            find_movie_for_review
             # convert id for movie from user's current list of movies to movie_id to create review
             params['review']['movie_id'] = @movie.id
             params['review']['id'] = nil
@@ -52,8 +52,8 @@ class ReviewsController < ApplicationController
 
     # params review/user_id from all routes
     def update
-        if @review && @review.user_id == current_user.id
-            @movie = Movie.find_by(id: params["review"]["movie_id"])
+        if validate_review
+            find_movie_for_review
             if @movie && @review.update(review_params)
                 redirect_to user_reviews_path(current_user.id)
             else
@@ -68,10 +68,9 @@ class ReviewsController < ApplicationController
     # params only has review's id
     #nested with movie show 
     def destroy
-        if @review && @review.user_id == current_user.id
-            movie_by_name = @review.movie.Title
+        if validate_review
             @review.destroy    
-            flash[:notice] = "Your review for #{movie_by_name} has been deleted."
+            flash[:notice] = "Your review for #{helpers.movie_by_name} has been deleted."
             redirect_to user_reviews_path(current_user)
         else
             redirect_to "/", notice: "Access Denied. You may only access, add to, or update your own account information."
@@ -94,4 +93,12 @@ class ReviewsController < ApplicationController
         correct_user?(@user)
     end
 
+    def find_movie_for_review
+        @movie = Movie.find_by(id: params["review"]["id"]) || Movie.find_by(id: params["review"]["movie_id"])
+    end
+
+    def validate_review
+        @review && @review.user_id == current_user.id
+    end
+    
 end

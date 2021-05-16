@@ -1,10 +1,9 @@
 class MoviesController < ApplicationController
     before_action :redirect_if_not_logged_in, only: [:show, :search_by_name, :search_by_id]
-    before_action :find_user, only: [:destroy]
     before_action :find_movie, only: [:show, :destroy]
 
     def show
-        @reviews = @movie.reviews if @movie
+        @reviews = @movie.try(:reviews)
     end
 
     def search_by_name
@@ -29,10 +28,11 @@ class MoviesController < ApplicationController
 
     # this option is on the watchlist show page
     def destroy
+        @user = current_user
         @watchlist = Watchlist.find_by(id: params["watchlist_id"])
         if @movie && @watchlist && @user.movies.include?(@movie) && @user.watchlists.include?(@watchlist)
             if @watchlist.movies.delete(@movie)
-                redirect_to user_watchlist_path(@user.id, @watchlist.id), notice: "#{@movie.Title} has been removed from your #{@watchlist.category_type.capitalize} watchlist."
+                redirect_to user_watchlist_path(@user.id, @watchlist.id), notice: "#{@movie.Title} has been removed from your #{@watchlist.category_type.titleize} watchlist."
             else
                 redirect_to user_watchlist_path(@user.id, @watchlist.id), notice: "There was a problem deleting this movie from your watchlist. Please try again."
             end

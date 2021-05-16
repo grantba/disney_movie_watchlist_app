@@ -3,7 +3,6 @@ class Movie < ApplicationRecord
     has_and_belongs_to_many :watchlists, through: :movie_watchlists
     has_many :users, through: :watchlists
     has_many :reviews
-    # default_scope { order(:Title)}
 
     def self.make_a_movie(movies_array)
         movies_array.each do |movie|
@@ -52,24 +51,24 @@ class Movie < ApplicationRecord
     def self.highest_app_rating
         movies = self.joins(:reviews).where('rating == 5').distinct
         movies = movies.map {|m| m unless m.Poster.nil? || m.Poster == "N/A"}
-        @movie = movies.sample
+        movie = movies.sample
     end
 
     def self.highest_imdb_rating
         movies = self.where.not(imdbRating: nil).where.not(imdbRating: "N/A").order(imdbRating: :desc).limit(25)
-        @movie = movies.sample
+        movie = movies.sample
     end
 
     def self.random_pick
         movies = self.all.where.not(Poster: nil).where.not(Poster: "N/A")
-        @movie = movies.sample
+        movie = movies.sample
     end
 
     def self.highest_box_office_gross
-        movies = self.all.where.not(BoxOffice: nil).where.not(BoxOffice: "N/A").where.not(BoxOffice: 0).order("length(BoxOffice) desc")
+        movies = self.where.not(BoxOffice: nil).where.not(BoxOffice: "N/A").where.not(BoxOffice: 0).order("length(BoxOffice) desc")
         movies = movies.sort_by { |s| s.BoxOffice.scan(/\d+/).first.to_i }
         movies = movies.reverse
-        @movie = movies[0..25].sample
+        movie = movies[0..25].sample
     end
 
 end

@@ -31,6 +31,8 @@ Specs:
     Movie has_and_belongs_to_many :watchlists, through: :movie_watchlists
 
  ☑ The "through" part of the has_many through includes at least one user submittable attribute, that is to say, some attribute other than its foreign keys that can be submitted by the app's user (attribute_name e.g. ingredients.quantity)
+    Movie has_many :users, through: :watchlists
+    User has_many :movies, through: :watchlists
     The user can submit the category_type for their watchlist
 
  ☑ Include reasonable validations for simple model objects (list of model objects with validations e.g. User, Recipe, Ingredient, Item)
@@ -73,7 +75,7 @@ Specs:
     end
 
  ☑ Include form display of validation errors (form URL e.g. /recipes/new)
-    Validation errors will display for all new and edit actions if applicable
+    Validation errors will display for new and edit actions if applicable
 
 Confirm:
 
