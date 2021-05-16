@@ -8,7 +8,7 @@ class WatchlistsController < ApplicationController
 
     # params user_id
     def show
-        if @watchlist && @watchlist.user_id == current_user.id
+        if validate_watchlist
             render :show
         else
             redirect_to "/", notice: "Access Denied. You may only access, add to, or update your own account information."
@@ -23,12 +23,12 @@ class WatchlistsController < ApplicationController
     # params watchlist/user_id from all routes
     def create
         if !params['watchlist']['movie_id'].blank? && params['watchlist']['category_type'].blank?
-            @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+            find_movie_for_watchlist
             redirect_to movie_path(@movie), notice: "There was an error creating your new watchlist. Make sure the name for your watchlist is not blank. Please try again."
         else
             @watchlist = Watchlist.new(watchlist_params.except("movie_id"))
             if params["watchlist"]["movie_id"]
-                @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+                find_movie_for_watchlist
                 if @movie && @watchlist.save
                     @watchlist.movies << @movie
                     redirect_to user_watchlist_path(current_user.id, @watchlist.id)
@@ -51,14 +51,14 @@ class WatchlistsController < ApplicationController
     def update
         # if adding movie to an existing watchlist from the movie show page and didn't select a watchlist for the movie 
         if !params['watchlist']['movie_id'].blank? && params['watchlist']['watchlist_id'].blank?
-            @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+            find_movie_for_watchlist
             redirect_to movie_path(@movie), notice: "There was an error adding this movie to your watchlist. Make sure you have selected a watchlist from the list. Please try again."
         else
             @watchlist = Watchlist.find_by(id: params["watchlist"]["watchlist_id"])
-            if @watchlist && @watchlist.user_id == current_user.id
+            if validate_watchlist
                 # if adding a movie to an existing watchlist whether from movie show page or watchlist show page
                 if params["watchlist"]["movie_id"]
-                    @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+                    find_movie_for_watchlist
                     @watchlist.movies << @movie if @movie
                     if @watchlist.save
                         redirect_to user_watchlist_path(current_user.id, @watchlist)
@@ -82,7 +82,7 @@ class WatchlistsController < ApplicationController
 
     # params only has watchlist's id
     def destroy
-        if @watchlist && @watchlist.user_id == current_user.id
+        if validate_watchlist
             watchlist_by_name = @watchlist.category_type
             @watchlist.movies.clear
             @watchlist.destroy
@@ -108,4 +108,12 @@ class WatchlistsController < ApplicationController
         correct_user?(@user)
     end
     
+    def find_movie_for_watchlist
+        @movie = Movie.find_by(id: params["watchlist"]["movie_id"])
+    end
+
+    def validate_watchlist
+        @watchlist && @watchlist.user_id == current_user.id
+    end
+
 end
