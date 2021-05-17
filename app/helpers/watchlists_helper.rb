@@ -6,11 +6,6 @@ module WatchlistsHelper
         watchlists = watchlists.sort_by { |wl| wl.category_type }
     end
 
-    def remove_watchlists_from_user
-        watchlists = watchlists_by_user.each { |wl| wl.movies.clear }
-        watchlists.each { |wl| wl.destroy }
-    end
-
     def watchlist_movies(watchlist)
         watchlist.movies.order(:Title)
     end

@@ -27,8 +27,8 @@ class UsersController < ApplicationController
 
     def destroy
         user_by_name = helpers.users_name
-        helpers.remove_reviews_from_user
-        helpers.remove_watchlists_from_user
+        Review.remove_reviews_from_user
+        Watchlist.remove_watchlists_from_user
         @user.destroy
         redirect_to root_path, notice: "We're sad to see you go, #{user_by_name}, but thanks for visiting!"
     end
