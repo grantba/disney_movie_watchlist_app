@@ -49,8 +49,7 @@ class Movie < ApplicationRecord
     end 
 
     def self.highest_app_rating
-        movies = self.joins(:reviews).where('rating == 5').distinct
-        movies = movies.map {|m| m unless m.Poster.nil? || m.Poster == "N/A"}
+        movies = Movie.where.not(Poster: nil).where.not(Poster: "N/A").joins(:reviews).where('rating == 5').distinct
         movie = movies.sample
     end
 
@@ -65,9 +64,7 @@ class Movie < ApplicationRecord
     end
 
     def self.highest_box_office_gross
-        movies = self.where.not(BoxOffice: nil).where.not(BoxOffice: "N/A").where.not(BoxOffice: 0).order("length(BoxOffice) desc")
-        movies = movies.sort_by { |s| s.BoxOffice.scan(/\d+/).first.to_i }
-        movies = movies.reverse
+        movies = Movie.where.not(BoxOffice: nil).where.not(BoxOffice: "N/A").where.not(BoxOffice: 0).sort_by { |s| s.BoxOffice.to_i}.reverse
         movie = movies[0..25].sample
     end
 
