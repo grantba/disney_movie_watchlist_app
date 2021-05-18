@@ -2,8 +2,14 @@ class Movie < ApplicationRecord
     has_many :movie_watchlists
     has_and_belongs_to_many :watchlists, through: :movie_watchlists
     has_many :users, through: :watchlists
+    has_many :users, through: :reviews
     has_many :reviews
 
+    scope :app_ratings, -> { where.not(Poster: nil).where.not(Poster: "N/A").joins(:reviews).where('rating == 5').distinct }
+    scope :imdb_ratings, -> { where.not(imdbRating: nil).where.not(imdbRating: "N/A").order(imdbRating: :desc).limit(25) }
+    scope :all_movies, -> { where.not(Poster: nil).where.not(Poster: "N/A") }
+    scope :box_office_gross, -> { where.not(BoxOffice: nil).where.not(BoxOffice: "N/A").where.not(BoxOffice: 0).sort_by { |s| s.BoxOffice.to_i}.reverse }
+    
     def self.make_a_movie(movies_array)
         movies_array.each do |movie|
           Movie.create(movie)
@@ -49,23 +55,19 @@ class Movie < ApplicationRecord
     end 
 
     def self.highest_app_rating
-        movies = Movie.where.not(Poster: nil).where.not(Poster: "N/A").joins(:reviews).where('rating == 5').distinct
-        movie = movies.sample
+        movie = app_ratings.sample
     end
 
     def self.highest_imdb_rating
-        movies = self.where.not(imdbRating: nil).where.not(imdbRating: "N/A").order(imdbRating: :desc).limit(25)
-        movie = movies.sample
+        movie = imdb_ratings.sample
     end
 
     def self.random_pick
-        movies = self.all.where.not(Poster: nil).where.not(Poster: "N/A")
-        movie = movies.sample
+        movie = all_movies.sample
     end
 
     def self.highest_box_office_gross
-        movies = Movie.where.not(BoxOffice: nil).where.not(BoxOffice: "N/A").where.not(BoxOffice: 0).sort_by { |s| s.BoxOffice.to_i}.reverse
-        movie = movies[0..25].sample
+        movie = box_office_gross[0..25].sample
     end
 
 end

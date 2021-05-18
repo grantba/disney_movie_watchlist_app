@@ -3,6 +3,7 @@ class User < ApplicationRecord
     has_many :watchlists
     has_many :reviews
     has_many :movies, through: :watchlists
+    has_many :movies, through: :reviews
     
     validates :name, :email, :username, presence: true
     validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: "must be a valid email address, for example, user@email.com." }

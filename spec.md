@@ -31,9 +31,9 @@ Specs:
     Movie has_and_belongs_to_many :watchlists, through: :movie_watchlists
 
  ☑ The "through" part of the has_many through includes at least one user submittable attribute, that is to say, some attribute other than its foreign keys that can be submitted by the app's user (attribute_name e.g. ingredients.quantity)
-    Movie has_many :users, through: :watchlists
-    User has_many :movies, through: :watchlists
-    The user can submit the category_type for their watchlist
+    Movie has_many :users, through: :reviews
+    User has_many :movies, through: :reviews
+    The user can submit a rating and description for their review
 
  ☑ Include reasonable validations for simple model objects (list of model objects with validations e.g. User, Recipe, Ingredient, Item)
     Review validates rating and description
@@ -41,8 +41,7 @@ Specs:
     Watchlist validates category_type
 
  ☑ Include a class level ActiveRecord scope method (model object & class method name and URL to see the working feature e.g. User.most_recipes URL: /users/most_recipes)
-    There are default scope methods for Users Watchlists, Movies, and Watchlists as well as
-    three scope methods for Movies (highest_rating, random_pick, and highest_box_office_gross)
+    There are four scope methods for Movies (random_pick, highest_app_rating, highest_imdb_rating, and highest_box_office_gross)
 
  ☑ Include signup
     Signup page for users also gives users the option to login through a 3rd party using OmniAuth
