@@ -1,5 +1,4 @@
 class MoviesController < ApplicationController
-    before_action :redirect_if_not_logged_in, only: [:show, :search_by_name, :search_by_id]
     before_action :find_movie, only: [:show, :destroy]
 
     def show
